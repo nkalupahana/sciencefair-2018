@@ -88,10 +88,10 @@ def post_processing(output, original_img):
     index = 0
     for row in range( num_grids ):
         for col in range( num_grids ):
-            for b_box_voltron in range(125):
+            for b_box_voltron in range(30):
                 b_box = row * num_grids + col
-                b_box_num = int(b_box_voltron / 25)
-                b_box_info = b_box_voltron % 25
+                b_box_num = int(b_box_voltron / 6)
+                b_box_info = b_box_voltron % 6
                 reordered_results[b_box][b_box_num][b_box_info] = original_results[row][col][b_box_voltron]
 
     # shapes for the 5 Tiny Yolo v2 bounding boxes
