@@ -208,6 +208,7 @@ def post_processing(output, original_img):
 
 
 def main():
+    print("Loading system...")
     mvnc.global_set_option(mvnc.GlobalOption.RW_LOG_LEVEL, 2)
 
     # enumerate all devices
@@ -232,6 +233,8 @@ def main():
 
     cap = cv2.VideoCapture(0)
 
+
+    print("Starting capture...")
     try:
     while True:
         global start_time
