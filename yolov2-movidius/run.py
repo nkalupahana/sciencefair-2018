@@ -197,7 +197,7 @@ def post_processing(output, original_img):
 
     # display all items overlayed in the render window
     cv2.imshow('Tiny Yolo V2', original_img)
-    cv2.waitKey(1)
+    cv2.waitKey()
 
     return
 
