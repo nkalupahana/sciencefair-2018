@@ -236,30 +236,30 @@ def main():
 
     print("Starting capture...")
     try:
-    while True:
-        global start_time
-        start_time = time.time()
+        while True:
+            global start_time
+            start_time = time.time()
 
-        # read an image in bgr format
-        ret, img = cap.read()
-        original_img = img
+            # read an image in bgr format
+            ret, img = cap.read()
+            original_img = img
 
-        # bgr input scaling
-        img = np.divide(img, 255.0)
-        resized_img = cv2.resize(img, (416, 416), cv2.INTER_LINEAR)
+            # bgr input scaling
+            img = np.divide(img, 255.0)
+            resized_img = cv2.resize(img, (416, 416), cv2.INTER_LINEAR)
 
-        # transpose the image to rgb
-        resized_img = resized_img[:, :, ::-1]
-        resized_img = resized_img.astype(np.float32)
+            # transpose the image to rgb
+            resized_img = resized_img[:, :, ::-1]
+            resized_img = resized_img.astype(np.float32)
 
-        # make an inference
-        graph.queue_inference_with_fifo_elem(fifo_in, fifo_out, resized_img, 'user object')
-        # get the result
-        output, userobj = fifo_out.read_elem()
+            # make an inference
+            graph.queue_inference_with_fifo_elem(fifo_in, fifo_out, resized_img, 'user object')
+            # get the result
+            output, userobj = fifo_out.read_elem()
 
-        # Tiny Yolo V2 requires post processing to filter out duplicate objects and low score objects
-        # After post processing, the app will display the image and any detected objects
-        post_processing(output, original_img)
+            # Tiny Yolo V2 requires post processing to filter out duplicate objects and low score objects
+            # After post processing, the app will display the image and any detected objects
+            post_processing(output, original_img)
     except KeyboardInterrupt:
         print("Closing, please wait...")
         pass
