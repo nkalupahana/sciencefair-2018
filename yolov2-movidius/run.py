@@ -195,9 +195,7 @@ def post_processing(output, original_img):
     global start_time
     print("Inference Time: " + str(time.time() - start_time) + " seconds")
 
-    # display all items overlayed in the render window
-    cv2.imshow('Tiny Yolo V2', original_img)
-    cv2.waitKey()
+    cv2.imwrite("detect.png", original_img)
 
     return
 
