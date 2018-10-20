@@ -70,7 +70,7 @@ def apply_nms(boxes):
 
 def post_processing(output, original_img):
 
-    num_classes = 20
+    num_classes = 1
     num_grids = 13
     num_anchor_boxes = 5
     original_results = output.astype(np.float32)
@@ -78,12 +78,12 @@ def post_processing(output, original_img):
     # Tiny Yolo V2 uses a 13 x 13 grid with 5 anchor boxes for each grid cell.
     # This specific model was trained with the VOC Pascal data set and is comprised of 20 classes
 
-    original_results = np.reshape(original_results, (13, 13, 125))
+    original_results = np.reshape(original_results, (13, 13, 30))
 
     # The 125 results need to be re-organized into 5 chunks of 25 values
     # 20 classes + 1 score + 4 coordinates = 25 values
     # 25 values for each of the 5 anchor bounding boxes = 125 values
-    reordered_results = np.zeros((13 * 13, 5, 25))
+    reordered_results = np.zeros((13 * 13, 5, 6))
 
     index = 0
     for row in range( num_grids ):
