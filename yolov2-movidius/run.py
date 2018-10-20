@@ -7,19 +7,14 @@ from mvnc import mvncapi as mvnc
 import cv2
 import numpy as np
 import sys
-import argparse
 
-parser = argparse.ArgumentParser(description='Inputs!')
-args = vars(parser.parse_args())
-
-GRAPH_PATH = "./tiny_yolo_v2.graph"
+GRAPH_PATH = "./main.graph"
 DETECTION_THRESHOLD = 0.40
 IOU_THRESHOLD = 0.30
 
 label_name = {0: "dandelion"}
 
 import time
-
 start_time = 0
 
 def sigmoid(x):
