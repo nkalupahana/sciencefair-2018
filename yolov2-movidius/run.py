@@ -9,8 +9,8 @@ import numpy as np
 import sys
 
 GRAPH_PATH = "./main.graph"
-DETECTION_THRESHOLD = 0.40
-IOU_THRESHOLD = 0.30
+DETECTION_THRESHOLD = 0.20
+IOU_THRESHOLD = 0.20
 
 label_name = {0: "bg", 1: "dandelion"}
 
