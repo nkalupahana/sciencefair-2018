@@ -12,7 +12,7 @@ GRAPH_PATH = "./main.graph"
 DETECTION_THRESHOLD = 0.40
 IOU_THRESHOLD = 0.30
 
-label_name = {0: "dandelion"}
+label_name = {0: "bg", 1: "dandelion"}
 
 import time
 start_time = 0
