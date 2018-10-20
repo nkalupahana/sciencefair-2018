@@ -10,18 +10,13 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser(description='Inputs!')
-parser.add_argument("-i", "--image", required=True, help="Image Location")
 args = vars(parser.parse_args())
-
-IMAGE_FROM_DISK = args["image"]
 
 GRAPH_PATH = "./tiny_yolo_v2.graph"
 DETECTION_THRESHOLD = 0.40
 IOU_THRESHOLD = 0.30
 
-label_name = {0: "bg", 1: "aeroplane", 2: "bicycle", 3: "bird", 4: "boat", 5: "bottle", 6: "bus", 7: "car", 8: "cat",
-              9: "chair", 10: "cow", 11: "diningtable", 12: "dog", 13: "horse", 14: "motorbike", 15: "person",
-              16: "pottedplant", 17: "sheep", 18: "sofa", 19: "train", 20: "tvmonitor"}
+label_name = {0: "dandelion"}
 
 import time
 
@@ -206,24 +201,13 @@ def post_processing(output, original_img):
     print("Inference Time: " + str(time.time() - start_time) + " seconds")
 
     # display all items overlayed in the render window
-    cv2.imwrite('detection.png',original_img)
-    #cv2.imshow('Tiny Yolo V2', original_img)
-    #cv2.waitKey()
+    cv2.imshow('Tiny Yolo V2', original_img)
+    cv2.waitKey(1)
+
+    return
 
 
 def main():
-    # read an image in bgr format
-    img = cv2.imread(IMAGE_FROM_DISK)
-    original_img = img
-
-    # bgr input scaling
-    img = np.divide(img, 255.0)
-    resized_img = cv2.resize(img, (416, 416), cv2.INTER_LINEAR)
-
-    # transpose the image to rgb
-    resized_img = resized_img[:, :, ::-1]
-    resized_img = resized_img.astype(np.float32)
-
     mvnc.global_set_option(mvnc.GlobalOption.RW_LOG_LEVEL, 2)
 
     # enumerate all devices
@@ -246,25 +230,46 @@ def main():
     # create the input and output fifos
     fifo_in, fifo_out = graph.allocate_with_fifos(device, graph_in_memory)
 
-    global start_time
-    start_time = time.time()
+    cap = cv2.VideoCapture(0)
 
-    # make an inference
-    graph.queue_inference_with_fifo_elem(fifo_in, fifo_out, resized_img, 'user object')
-    # get the result
-    output, userobj = fifo_out.read_elem()
+    try:
+    while True:
+        global start_time
+        start_time = time.time()
 
-    # Tiny Yolo V2 requires post processing to filter out duplicate objects and low score objects
-    # After post processing, the app will display the image and any detected objects
-    post_processing(output, original_img)
+        # read an image in bgr format
+        ret, img = cap.read()
+        original_img = img
+
+        # bgr input scaling
+        img = np.divide(img, 255.0)
+        resized_img = cv2.resize(img, (416, 416), cv2.INTER_LINEAR)
+
+        # transpose the image to rgb
+        resized_img = resized_img[:, :, ::-1]
+        resized_img = resized_img.astype(np.float32)
+
+        # make an inference
+        graph.queue_inference_with_fifo_elem(fifo_in, fifo_out, resized_img, 'user object')
+        # get the result
+        output, userobj = fifo_out.read_elem()
+
+        # Tiny Yolo V2 requires post processing to filter out duplicate objects and low score objects
+        # After post processing, the app will display the image and any detected objects
+        post_processing(output, original_img)
+    except KeyboardInterrupt:
+        print("Closing, please wait...")
+        pass
 
     # clean up
+    cv2.destroyAllWindows()
+    cv2.VideoCapture(0).release()
     fifo_in.destroy()
     fifo_out.destroy()
     graph.destroy()
     device.close()
     device.destroy()
-    print("Finished")
+    print("All done!")
 
 # main entry point for program. we'll call main() to do what needs to be done.
 if __name__ == "__main__":
