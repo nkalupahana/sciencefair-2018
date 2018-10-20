@@ -151,6 +151,8 @@ def post_processing(output, original_img):
     # gets rid of all duplicate boxes using non-maximal suppression
     results = apply_nms(boxes)
 
+    print(results)
+
     image_width = original_img.shape[1]
     image_height = original_img.shape[0]
 
@@ -189,6 +191,7 @@ def post_processing(output, original_img):
         # set up text
         cv2.putText(original_img, label_text, (int(box_xmin), int(box_ymin - 5)), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                     label_text_color, 1)
+
         # set up the rectangle around the object
         cv2.rectangle(original_img, (int(box_xmin), int(box_ymin)), (int(box_xmax), int(box_ymax)), (0, 255, 0), 2)
 
