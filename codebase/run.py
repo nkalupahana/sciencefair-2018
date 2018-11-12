@@ -210,7 +210,7 @@ def main():
     # enumerate all devices
     devices = mvnc.enumerate_devices()
     if len(devices) == 0:
-        print('No devices found')
+        print("No devices found")
         quit()
 
     # use the first device found
@@ -219,7 +219,7 @@ def main():
     device.open()
 
     # load the model from the disk
-    with open(GRAPH_PATH, mode='rb') as f:
+    with open(GRAPH_PATH, mode="rb") as f:
         graph_in_memory = f.read()
 
     graph = mvnc.Graph(GRAPH_PATH)
@@ -228,7 +228,6 @@ def main():
     fifo_in, fifo_out = graph.allocate_with_fifos(device, graph_in_memory)
 
     cap = cv2.VideoCapture(0)
-
 
     print("Starting capture...")
     try:
@@ -249,7 +248,7 @@ def main():
             resized_img = resized_img.astype(np.float32)
 
             # make an inference
-            graph.queue_inference_with_fifo_elem(fifo_in, fifo_out, resized_img, 'user object')
+            graph.queue_inference_with_fifo_elem(fifo_in, fifo_out, resized_img, "user object")
             # get the result
             output, userobj = fifo_out.read_elem()
 
@@ -270,6 +269,6 @@ def main():
     device.destroy()
     print("All done!")
 
-# main entry point for program. we'll call main() to do what needs to be done.
+# main entry point for program. we"ll call main() to do what needs to be done.
 if __name__ == "__main__":
     sys.exit(main())
