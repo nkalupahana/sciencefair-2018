@@ -3,7 +3,9 @@ import cv2
 import numpy as np
 import sys
 import threading
+import copy
 
+gymin = 0
 
 class Camera:
     def sigmoid(x):
@@ -144,6 +146,34 @@ class Camera:
         image_width = original_img.shape[1]
         image_height = original_img.shape[0]
 
+        j = 0
+
+        _results = copy.deepcopy(results)
+        for box in _results:
+            box_xmin = (box[0] - box[2] / 2.0)
+            box_xmax = (box[0] + box[2] / 2.0)
+
+            avg = (box_xmin + box_xmax) / 2
+
+            if avg < 0.35 or avg > 0.65:
+                print("Result removed at avg x: " + avg)
+                del results[j]
+
+            j += 1
+
+
+        global gymin
+        gymin = 10
+
+        for box in results:
+            ymin = (box[1] - box[3] / 2.0) # essentially box y min divided by image height (percent from bottom of view)
+
+            if ymin < gymin:
+                gymin = ymin
+
+        return (False if (len(results) == 0) else True)
+
+        """
         # calculate the actual box coordinates in relation to the input image
         for box in results:
             box_xmin = (box[0] - box[2] / 2.0) * image_width
@@ -190,6 +220,8 @@ class Camera:
 
         return
 
+        """
+
     def __init__(_gp, _dt, _iou, _lab):
         """
         GRAPH_PATH = "../files/main.graph"
@@ -227,34 +259,35 @@ class Camera:
 
         self.cap = cv2.VideoCapture(0)
 
-    def _run():
-        while True:
-            # read an image in bgr format
-            ret, img = self.cap.read()
-            original_img = img
+    def run():
+        #while True:
 
-            # bgr input scaling
-            img = np.divide(img, 255.0)
-            resized_img = cv2.resize(img, (416, 416), cv2.INTER_LINEAR)
+        # read an image in bgr format
+        ret, img = self.cap.read()
+        original_img = img
 
-            # transpose the image to rgb
-            resized_img = resized_img[:, :, ::-1]
-            resized_img = resized_img.astype(np.float32)
+        # bgr input scaling
+        img = np.divide(img, 255.0)
+        resized_img = cv2.resize(img, (416, 416), cv2.INTER_LINEAR)
 
-            # make an inference
-            self.graph.queue_inference_with_fifo_elem(self.fifo_in, self.fifo_out, resized_img, "user object")
-            # get the result
-            output, userobj = self.fifo_out.read_elem()
+        # transpose the image to rgb
+        resized_img = resized_img[:, :, ::-1]
+        resized_img = resized_img.astype(np.float32)
 
-            # Tiny Yolo V2 requires post processing to filter out duplicate objects and low score objects
-            # After post processing, the app will display the image and any detected objects
-            self.post_processing(output, original_img)
+        # make an inference
+        self.graph.queue_inference_with_fifo_elem(self.fifo_in, self.fifo_out, resized_img, "user object")
+        # get the result
+        output, userobj = self.fifo_out.read_elem()
+
+        # Tiny Yolo V2 requires post processing to filter out duplicate objects and low score objects
+        # After post processing, the app will display the image and any detected objects
+        return self.post_processing(output, original_img)
 
 
-    def start():
+    """def start():
         self.thread = multiprocessing.Process(target=_run)
         self.thread.daemon = True
         self.thread.start()
 
     def stop():
-        self.thread.terminate()
+        self.thread.terminate()"""

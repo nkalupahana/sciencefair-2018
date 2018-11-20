@@ -10,7 +10,7 @@ class Cutter:
     def cut():
         self.cutter.setSpeed(255)
         self.cutter.run(Adafruit_MotorHAT.FORWARD)
-        sleep(1000)
+        sleep(4)
         self.cutter.run(Adafruit_MotorHAT.RELEASE)
 
 

@@ -5,6 +5,7 @@ from time import sleep
 import atexit
 from api.motors import *
 from api.camera import *
+from api.positioning import *
 
 atexit.register(turnOffMotors)
 
@@ -14,9 +15,27 @@ mh = Adafruit_MotorHAT(addr=0x60)
 # system initialization
 ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
 cutter = Cutter(mh.getMotor(3))
-camera = Camera()
-camera.start()
+camera = Camera("../files/main.graph", 0.20, 0.20, {0: "bg", 1: "dandelion"})
 
-ds.start(100)
-sleep(2)
-ds.stop()
+# Start main driver system thread
+drivethread = multiprocessing.Process(target=driver)
+drivethread.daemon = True
+drivethread.start()
+
+# Start main driver system thread
+gpsthread = multiprocessing.Process(target=gpssystem)
+gpsthread.daemon = True
+gpsthread.start()
+
+def driver():
+    global gymin
+    ds.start(100)
+
+    while True:
+        if (camera.run()):
+            sleep(gymin * 5)
+            ds.setSpeed(50)
+            cutter.cut()
+            ds.setSpeed(1) # Pause for further camera input
+        else:
+            ds.setSpeed(100)
