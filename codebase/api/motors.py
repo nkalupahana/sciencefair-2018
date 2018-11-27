@@ -11,6 +11,7 @@ class Cutter:
         self.cutter.setSpeed(255)
         self.cutter.run(Adafruit_MotorHAT.FORWARD)
         sleep(4)
+        self.cutter.setSpeed(0)
         self.cutter.run(Adafruit_MotorHAT.RELEASE)
 
 
