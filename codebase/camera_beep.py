@@ -151,7 +151,7 @@ def post_processing(output, original_img):
     # gets rid of all duplicate boxes using non-maximal suppression
     results = apply_nms(boxes)
     print(results)
-
+    
     if (len(results) > 0):
         Popen(["./api/tonecreation", "100", "0.25"])
 
