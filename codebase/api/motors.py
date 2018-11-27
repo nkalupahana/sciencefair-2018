@@ -1,3 +1,5 @@
+from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
+
 def turnOffMotors():
     mh = Adafruit_MotorHAT(addr=0x60)
     mh.getMotor(1).run(Adafruit_MotorHAT.RELEASE)
