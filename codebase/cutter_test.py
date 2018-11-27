@@ -4,8 +4,6 @@ from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
 from time import sleep
 import atexit
 
-atexit.register(turnOffMotors)
-
 # create a default object, no changes to I2C address or frequency
 mh = Adafruit_MotorHAT(addr=0x60)
 motor = mh.getMotor(3)
