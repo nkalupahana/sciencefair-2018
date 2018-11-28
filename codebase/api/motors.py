@@ -1,4 +1,5 @@
 from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
+from time import sleep
 
 def turnOffMotors():
     mh = Adafruit_MotorHAT(addr=0x60)
