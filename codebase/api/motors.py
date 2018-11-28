@@ -41,5 +41,7 @@ class DriveSystem:
         self.m2.run(Adafruit_MotorHAT.FORWARD)
 
     def stop(self):
+        self.m1.setSpeed(0)
+        self.m2.setSpeed(0)
         self.m1.run(Adafruit_MotorHAT.RELEASE)
         self.m2.run(Adafruit_MotorHAT.RELEASE)
