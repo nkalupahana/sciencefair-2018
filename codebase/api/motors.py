@@ -10,7 +10,7 @@ class Cutter:
     def __init__(self, motor):
         self.cutter = motor
 
-    def cut():
+    def cut(self):
         self.cutter.setSpeed(255)
         self.cutter.run(Adafruit_MotorHAT.FORWARD)
         sleep(4)
@@ -23,11 +23,11 @@ class DriveSystem:
         self.m1 = motor1
         self.m2 = motor2
 
-    def setSpeed(speed):
+    def setSpeed(self, speed):
         self.m1.setSpeed(speed)
         self.m2.setSpeed(speed)
 
-    def start(speed):
+    def start(self, speed):
         if speed:
             self.m1.setSpeed(speed)
             self.m2.setSpeed(speed)
@@ -39,6 +39,6 @@ class DriveSystem:
         self.m1.run(Adafruit_MotorHAT.FORWARD)
         self.m2.run(Adafruit_MotorHAT.FORWARD)
 
-    def stop():
+    def stop(self):
         self.m1.run(Adafruit_MotorHAT.RELEASE)
         self.m2.run(Adafruit_MotorHAT.RELEASE)
