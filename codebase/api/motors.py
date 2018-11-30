@@ -25,17 +25,14 @@ class DriveSystem:
         self.m2 = motor2
 
     def setSpeed(self, speed):
-        if speed > 0:
-            self.m1.run(Adafruit_MotorHAT.FORWARD)
-            self.m2.run(Adafruit_MotorHAT.FORWARD)
-        else:
-            self.m1.run(Adafruit_MotorHAT.BACKWARD)
-            self.m2.run(Adafruit_MotorHAT.BACKWARD)
-
         self.m1.setSpeed(speed)
         self.m2.setSpeed(speed)
 
-    def start(self, speed):
+    def go(self, speed):
+        if speed == 0:
+            raise ValueError('You shouldn\'t be setting speed to 0! Call' +
+            ' .stop() instead!')
+
         if speed:
             if speed > 0:
                 self.m1.run(Adafruit_MotorHAT.FORWARD)
@@ -45,13 +42,8 @@ class DriveSystem:
                 self.m1.run(Adafruit_MotorHAT.BACKWARD)
                 self.m2.run(Adafruit_MotorHAT.BACKWARD)
                 self.setSpeed(-speed)
-
-        if speed == 0:
-            raise ValueError('You shouldn\'t be setting speed to 0! Call' +
-            ' .stop() instead!')
-
-        self.m1.run(Adafruit_MotorHAT.FORWARD)
-        self.m2.run(Adafruit_MotorHAT.FORWARD)
+        else:
+            raise ValueError('Setting speed is required!')
 
     def stop(self):
         self.m1.setSpeed(0)
