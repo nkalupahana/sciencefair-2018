@@ -40,12 +40,11 @@ class DriveSystem:
             if speed > 0:
                 self.m1.run(Adafruit_MotorHAT.FORWARD)
                 self.m2.run(Adafruit_MotorHAT.FORWARD)
+                self.setSpeed(speed)
             else:
                 self.m1.run(Adafruit_MotorHAT.BACKWARD)
                 self.m2.run(Adafruit_MotorHAT.BACKWARD)
-
-            self.m1.setSpeed(speed)
-            self.m2.setSpeed(speed)
+                self.setSpeed(-speed)
 
         if speed == 0:
             raise ValueError('You shouldn\'t be setting speed to 0! Call' +
