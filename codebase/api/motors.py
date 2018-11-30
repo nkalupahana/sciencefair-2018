@@ -20,16 +20,27 @@ class Cutter:
 
 
 class DriveSystem:
-    def __init__(self, motor1, motor2):
+    def __init__(self, mh, motor1, motor2):
+        self.mh = mh
         self.m1 = motor1
         self.m2 = motor2
 
     def setSpeed(self, speed):
+        if speed > 0:
+            self.mh.run(Adafruit_MotorHAT.FORWARD)
+        else:
+            self.mh.run(Adafruit_MotorHAT.BACKWARD)
+
         self.m1.setSpeed(speed)
         self.m2.setSpeed(speed)
 
     def start(self, speed):
         if speed:
+            if speed > 0:
+                self.mh.run(Adafruit_MotorHAT.FORWARD)
+            else:
+                self.mh.run(Adafruit_MotorHAT.BACKWARD)
+
             self.m1.setSpeed(speed)
             self.m2.setSpeed(speed)
 
