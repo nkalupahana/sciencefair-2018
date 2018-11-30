@@ -14,3 +14,7 @@ ds.stop()
 
 cutter = Cutter(mh.getMotor(3))
 cutter.cut()
+
+ds.start(-100)
+sleep(3)
+ds.stop()
