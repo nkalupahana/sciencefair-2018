@@ -1,3 +1,4 @@
+# Add API
 sys.path.append("../../")
 
 from api.globals import *
@@ -6,7 +7,7 @@ from api.database import *
 
 # Create database & GPS objects
 db = Database(DATABASE_NAME)
-db.reprepare()
+db.prepare()
 position = Positioning()
 
 # Create function to save state
