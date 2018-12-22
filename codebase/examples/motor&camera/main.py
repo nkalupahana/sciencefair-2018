@@ -14,8 +14,8 @@ atexit.register(turnOffMotors)
 mh = Adafruit_MotorHAT(addr=0x60)
 
 # system component initialization
-ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
-cutter = Cutter(mh.getMotor(3))
+ds = DriveSystem(mh.getMotor(BASE_MOTOR_1), mh.getMotor(BASE_MOTOR_2))
+cutter = Cutter(mh.getMotor(CUTTER_MOTOR))
 camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
 
 # Start main driver system thread
