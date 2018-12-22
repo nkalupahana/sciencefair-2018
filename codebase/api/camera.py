@@ -5,8 +5,6 @@ import sys
 import threading
 import copy
 
-gymin = 0
-
 class Camera:
     def sigmoid(x):
         return 1.0 / (1 + np.exp(x * -1.0))
@@ -162,8 +160,7 @@ class Camera:
             j += 1
 
 
-        global gymin
-        gymin = 10
+        gymin = 100
 
         for box in results:
             ymin = (box[1] - box[3] / 2.0) # essentially box y min divided by image height (percent from bottom of view)
@@ -171,56 +168,7 @@ class Camera:
             if ymin < gymin:
                 gymin = ymin
 
-        return (False if (len(results) == 0) else True)
-
-        """
-        # calculate the actual box coordinates in relation to the input image
-        for box in results:
-            box_xmin = (box[0] - box[2] / 2.0) * image_width
-            box_xmax = (box[0] + box[2] / 2.0) * image_width
-            box_ymin = (box[1] - box[3] / 2.0) * image_height
-            box_ymax = (box[1] + box[3] / 2.0) * image_height
-            # ensure the box is not drawn out of the window resolution
-            if box_xmin < 0:
-                box_xmin = 0
-            if box_xmax > image_width:
-                box_xmax = image_width
-            if box_ymin < 0:
-                box_ymin = 0
-            if box_ymax > image_height:
-                box_ymax = image_height
-
-            print (self.LABELS[box[4]], box_xmin, box_ymin, box_xmax, box_ymax)
-
-            # label shape and colorization
-            label_text = self.LABELS[box[4]] + " " + str("{0:.2f}".format(box[5]*box[6]))
-            label_background_color = (70, 120, 70) # grayish green background for text
-            label_text_color = (255, 255, 255)   # white text
-
-            label_size = cv2.getTextSize(label_text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)[0]
-            label_left = int(box_xmin)
-            label_top = int(box_ymin) - label_size[1]
-            label_right = label_left + label_size[0]
-            label_bottom = label_top + label_size[1]
-
-            # set up the colored rectangle background for text
-            cv2.rectangle(original_img, (label_left - 1, label_top - 5),(label_right + 1, label_bottom + 1),
-                          label_background_color, -1)
-            # set up text
-            cv2.putText(original_img, label_text, (int(box_xmin), int(box_ymin - 5)), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
-                        label_text_color, 1)
-
-            # set up the rectangle around the object
-            cv2.rectangle(original_img, (int(box_xmin), int(box_ymin)), (int(box_xmax), int(box_ymax)), (0, 255, 0), 2)
-
-        global start_time
-        print("Inference Time: " + str(time.time() - start_time) + " seconds")
-
-        cv2.imwrite("detect.png", original_img)
-
-        return
-
-        """
+        return (0 if (len(results) == 0) else gymin)
 
     def __init__(_gp, _dt, _iou, _lab):
         """
@@ -280,14 +228,4 @@ class Camera:
         output, userobj = self.fifo_out.read_elem()
 
         # Tiny Yolo V2 requires post processing to filter out duplicate objects and low score objects
-        # After post processing, the app will display the image and any detected objects
         return self.post_processing(output, original_img)
-
-
-    """def start():
-        self.thread = multiprocessing.Process(target=_run)
-        self.thread.daemon = True
-        self.thread.start()
-
-    def stop():
-        self.thread.terminate()"""
