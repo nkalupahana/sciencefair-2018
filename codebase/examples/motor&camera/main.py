@@ -6,7 +6,7 @@ import atexit, sys
 sys.path.append("../../")
 from api.motors import *
 from api.camera import *
-from api.positioning import *
+from api.globals import *
 
 atexit.register(turnOffMotors)
 
@@ -16,7 +16,7 @@ mh = Adafruit_MotorHAT(addr=0x60)
 # system component initialization
 ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
 cutter = Cutter(mh.getMotor(3))
-camera = Camera("../files/main.graph", 0.20, 0.20, {0: "bg", 1: "dandelion"})
+camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
 
 # Start main driver system thread
 drivethread = multiprocessing.Process(target=_driver)
