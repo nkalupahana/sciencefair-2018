@@ -2,7 +2,7 @@
 from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
 
 from time import sleep
-import atexit, sys
+import atexit, sys, multiprocessing
 sys.path.append("../../")
 from api.motors import *
 from api.camera import *

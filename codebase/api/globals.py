@@ -6,3 +6,4 @@ LABELS = {0: "bg", 1: "dandelion"}
 BASE_MOTOR_1 = 1
 BASE_MOTOR_2 = 2
 CUTTER_MOTOR = 3
+DATABASE_NAME = "locations.db"

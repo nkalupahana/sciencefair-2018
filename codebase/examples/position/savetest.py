@@ -1,0 +1,23 @@
+sys.path.append("../../")
+
+from api.globals import *
+from api.positioning import *
+from api.database import *
+
+# Create database & GPS objects
+db = Database(DATABASE_NAME)
+db.reprepare()
+position = Positioning()
+
+# Create function to save state
+def saveState():
+    pos = position.getLatLng()
+    db.put(pos.lat, pos.lng)
+
+# Create button, activate
+button = ButtonActionThread(BUTTON_PIN, saveState, 88) # TODO: check pitch
+button.activate()
+
+# stay alive
+while True:
+    sleep(1)
