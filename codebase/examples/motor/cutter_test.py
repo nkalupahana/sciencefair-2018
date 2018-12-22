@@ -2,7 +2,8 @@
 from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
 
 from time import sleep
-import atexit
+import atexit, sys
+sys.path.append("../../")
 from api.motors import *
 
 atexit.register(turnOffMotors)
