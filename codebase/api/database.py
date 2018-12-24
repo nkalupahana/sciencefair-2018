@@ -7,17 +7,17 @@ class Database:
 
     def prepare(self):
         try:
-            self.dbc.execute("DROP TABLE POINTS")
+            self.dbc.execute("DROP TABLE points")
         except:
             pass
 
-        self.dbc.execute("CREATE TABLE POINTS (lat NUMERIC, lng NUMBERIC)")
+        self.dbc.execute("CREATE TABLE points (lat NUMERIC, lng NUMBERIC)")
         return
 
     def put(self, lat, lng):
-        self.dbc.execute("INSERT INTO POINTS values(" + str(lat) + ", " + str(lng) + ")")
+        self.dbc.execute("INSERT INTO points values(" + str(lat) + ", " + str(lng) + ")")
         self.db.commit()
         return
 
     def getPoints(self):
-        return self.db.execute("SELECT * FROM POINTS")
+        return self.db.execute("SELECT rowid, lat, lng FROM points")
