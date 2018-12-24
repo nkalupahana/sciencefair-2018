@@ -13,10 +13,10 @@ class Cutter:
         self.cutter = motor
 
     def cut(self):
-        self.cutter._setSpeed(255)
+        self.cutter.setSpeed(255)
         self.cutter.run(Adafruit_MotorHAT.FORWARD)
         sleep(4)
-        self.cutter._setSpeed(0)
+        self.cutter.setSpeed(0)
         self.cutter.run(Adafruit_MotorHAT.RELEASE)
 
 
@@ -25,12 +25,20 @@ class DriveSystem:
         self.m1 = motor1
         self.m2 = motor2
 
-    def _setSpeed(self, speed):
-        self.m1._setSpeed(speed)
-        self.m2._setSpeed(speed)
+    def currentSpeed(self):
+        return self.currentSpeed
 
-    def go(self, speed):
-        if speed == 0:
+    def adjustSpeed(self, adj):
+        self.m1.setSpeed(self.currentSpeed + adj)
+        self.m2.setSpeed(self.currentSpeed - adj)
+
+    def _setSpeed(self, speed):
+        self.currentSpeed = speed
+        self.m1.setSpeed(speed)
+        self.m2.setSpeed(speed)
+
+    def go(self, speed, override = False):
+        if speed == 0 and !override:
             raise ValueError('You shouldn\'t be setting speed to 0! Call' +
             ' .stop() instead!')
 
@@ -47,7 +55,6 @@ class DriveSystem:
             raise ValueError('Setting speed is required!')
 
     def stop(self):
-        self.m1._setSpeed(0)
-        self.m2._setSpeed(0)
+        self._setSpeed(0)
         self.m1.run(Adafruit_MotorHAT.RELEASE)
         self.m2.run(Adafruit_MotorHAT.RELEASE)

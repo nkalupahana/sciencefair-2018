@@ -43,10 +43,11 @@ class NineDOF:
     def gyro_accel_heading(self):
         return self.gyro_accel_head
 
-    def gyro_accel_reset(self):
+    def _gyro_accel_reset(self):
         self.gyro_accel_head = 0
 
     def gyro_accel_heading_begin_tracking(self, dt):
+        self._gyro_accel_reset()
         self.gyro_accel_thread = multiprocessing.Process(target=self._thread_gyro_accel_heading, args=(dt))
         self.gyro_accel_thread.daemon = True
         self.gyro_accel_thread.start()
