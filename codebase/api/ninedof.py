@@ -1,8 +1,4 @@
-import time
-import board
-import busio
-import adafruit_lsm9ds1
-import multiprocessing
+import time, board, busio, adafruit_lsm9ds1, multiprocessing
 from math import atan, pi
 
 class NineDOF:
