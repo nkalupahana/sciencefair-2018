@@ -7,17 +7,17 @@ class Positioning:
         self.glock = gps(mode=WATCH_ENABLE) # starts info stream
 
     def _pull(self):
-        glock.next()
+        self.glock.next()
         return
 
     def getLatLng(self):
         self._pull()
-        return {lat: glock.fix.latitude, lng: glock.fix.longitude}
+        return {lat: self.glock.fix.latitude, lng: self.glock.fix.longitude}
 
     def getAltitude(self):
         self._pull()
-        return glock.fix.altitude
+        return self.glock.fix.altitude
 
     def getGPSGroundSpeed(self):
         self._pull()
-        return glock.fix.speed
+        return self.glock.fix.speed

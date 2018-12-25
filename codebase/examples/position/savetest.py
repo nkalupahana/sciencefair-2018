@@ -17,7 +17,7 @@ def saveState():
     db.put(pos.lat, pos.lng)
 
 # Create button, activate
-button = ButtonActionThread(BUTTON_PIN, saveState, 88) # TODO: check pitch
+button = ButtonActionThread(BUTTON_PIN, saveState, CONFIRM_PITCH) # TODO: check pitch
 button.activate()
 
 # stay alive

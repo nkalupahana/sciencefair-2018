@@ -32,6 +32,17 @@ class GyroDrive:
 
         self.orient.gyro_accel_heading_terminate()
 
+    def c_turn(self, angle):
+        self.orient.comb_heading_begin_tracking(0.05)
+        self.ds.go(0, True)
+
+        while abs(orient.gyro_accel_heading() - angle) > 0.1:
+            error = orient.gyro_accel_heading() - angle
+            self.ds.adjustSpeed(error * 20)
+            sleep(0.05)
+
+        self.orient.comb_heading_terminate()
+
 
     def straight_drive_start(self, speed):
         self.ds.go(speed)
@@ -42,7 +53,10 @@ class GyroDrive:
         # Gyro/Accelerometer:
         #self.orient.gyro_accel_heading_begin_tracking(0.1)
 
-        self.heading_thread = multiprocessing.Process(target=self._thread_straight_drive_m)
+        # Combined:
+        #self.orient.comb_heading_begin_tracking(0.1)
+
+        self.heading_thread = multiprocessing.Process(target=self._thread_straight_drive_m) # or _thread_straight_drive_ga_c
         self.heading_thread.daemon = True
         self.heading_thread.start()
 
@@ -57,13 +71,18 @@ class GyroDrive:
         except:
             pass
 
+        try:
+            self.orient.comb_heading_terminate()
+        except:
+            pass
+
     def _thread_straight_drive_m(self):
         while True:
             error = self.start_head - self.orient.magnometer_heading()
             self.ds.adjustSpeed(error * 8)
             sleep(0.1)
 
-    def _thread_straight_drive_ga(self):
+    def _thread_straight_drive_ga_c(self):
         while True:
             error = self.orient.gyro_accel_heading()
             self.ds.adjustSpeed(error * 8)
