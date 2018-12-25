@@ -3,6 +3,10 @@ from time import sleep
 
 def turnOffMotors():
     mh = Adafruit_MotorHAT(addr=0x60)
+    mh.getMotor(1).setSpeed(0)
+    mh.getMotor(2).setSpeed(0)
+    mh.getMotor(3).setSpeed(0)
+    mh.getMotor(4).setSpeed(0)
     mh.getMotor(1).run(Adafruit_MotorHAT.RELEASE)
     mh.getMotor(2).run(Adafruit_MotorHAT.RELEASE)
     mh.getMotor(3).run(Adafruit_MotorHAT.RELEASE)
@@ -25,9 +29,6 @@ class DriveSystem:
         self.m1 = motor1
         self.m2 = motor2
 
-    def currentSpeed(self):
-        return self.currentSpeed
-
     def adjustSpeed(self, adj):
         self.m1.setSpeed(self.currentSpeed + adj)
         self.m2.setSpeed(self.currentSpeed - adj)
@@ -38,7 +39,7 @@ class DriveSystem:
         self.m2.setSpeed(speed)
 
     def go(self, speed, override = False):
-        if speed == 0 and !override:
+        if speed == 0 and not override:
             raise ValueError('You shouldn\'t be setting speed to 0! Call' +
             ' .stop() instead!')
 
