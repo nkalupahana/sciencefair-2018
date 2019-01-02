@@ -7,10 +7,28 @@ import atexit, multiprocessing
 atexit.register(turnOffMotors)
 
 class GyroDrive:
-    def __init__(self):
-        mh = Adafruit_MotorHAT(addr=0x60)
-        self.ds = DriveSystem(mh.getMotor(BASE_MOTOR_1), mh.getMotor(BASE_MOTOR_2))
+    def __init__(self, m1, m2):
+        self.mh = Adafruit_MotorHAT(addr=0x60)
+        self.ds = DriveSystem(mh.getMotor(m1), mh.getMotor(m2))
         self.orient = NineDOF()
+        self.rightTurn = True
+
+    def getHAT(self):
+        return self.mh
+
+    def getDriveSystem(self):
+        return self.ds
+
+    def turn_sequence(self):
+        self.ds.stop()
+
+        self.m_turn(90) if self.rightTurn else self.m_turn(-90)
+        self.ds.run(100)
+        sleep(1)
+        self.ds.stop()
+        self.m_turn(90) if self.rightTurn else self.m_turn(-90)
+
+        self.rightTurn = not self.rightTurn
 
     def m_turn(self, angle):
         self.start_head = self.orient.magnometer_heading()
@@ -20,6 +38,8 @@ class GyroDrive:
             error = (self.start_head + angle) - self.orient.magnometer_heading()
             self.ds.adjustSpeed(error * 20)
             sleep(0.05)
+
+        self.ds.stop()
 
     def ga_turn(self, angle):
         self.orient.gyro_accel_heading_begin_tracking(0.05)
@@ -31,6 +51,7 @@ class GyroDrive:
             sleep(0.05)
 
         self.orient.gyro_accel_heading_terminate()
+        self.ds.stop()
 
     def c_turn(self, angle):
         self.orient.comb_heading_begin_tracking(0.05)
