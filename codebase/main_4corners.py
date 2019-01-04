@@ -12,9 +12,9 @@ atexit.register(turnOffMotors)
 drive = GyroDrive(BASE_MOTOR_1, BASE_MOTOR_2)
 cutter = Cutter(drive.getHAT().getMotor(CUTTER_MOTOR))
 camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
-db = Database(DATABASE_NAME)
 positioning = Positioning()
 startloc = positioning.getLatLng()
+bounds = Boundary(DATABASE_NAME)
 
 # Start main driver system thread
 dt = multiprocessing.Process(target=_driver)
@@ -24,8 +24,9 @@ dt.start()
 def _driver():
     drive.straight_drive_start(100)
 
-    while not drive.converged(positioning.getLatLng, startloc):
-        if drive.on_boundary():
+    while not bounds.converged(positioning.getLatLng, startloc):
+        if bounds.on_boundary():
+            drive.straight_drive_terminate()
             drive.turn_sequence()
 
         ymin = camera.run()
