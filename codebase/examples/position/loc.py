@@ -1,5 +1,6 @@
 import os
 from gpspy3 import gps
+from gpspy3 import *
 from time import *
 import time
 import threading
