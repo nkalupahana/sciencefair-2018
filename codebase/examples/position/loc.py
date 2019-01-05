@@ -32,7 +32,7 @@ if __name__ == '__main__':
       os.system('clear')
 
       print(' GPS reading')
-      print('----------------------------------------'
+      print('----------------------------------------')
       print('latitude    ' + gpsd.fix.latitude)
       print('longitude   ' + gpsd.fix.longitude)
       print('time utc    ' + gpsd.utc,' + ', gpsd.fix.time)
