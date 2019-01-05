@@ -1,5 +1,5 @@
 import os
-from gpspy3 import *
+from gpspy3 import gps
 from time import *
 import time
 import threading
@@ -12,7 +12,7 @@ class GpsPoller(threading.Thread):
   def __init__(self):
     threading.Thread.__init__(self)
     global gpsd #bring it in scope
-    gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
+    gpsd = gps.GPS(mode=WATCH_ENABLE) #starting the stream of info
     self.current_value = None
     self.running = True #setting the thread running to true
 
