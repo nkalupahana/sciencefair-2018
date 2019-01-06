@@ -26,7 +26,7 @@ class NineDOF:
             else:
                 return 0
 
-        direction = arctan(data["y"] / data["x"]) * (180 / pi)
+        direction = atan(data["y"] / data["x"]) * (180 / pi)
 
         while direction < 0:
             direction += 360
@@ -73,7 +73,7 @@ class NineDOF:
 
             # Sensitivity = -2 to 2 G at 16Bit -> 2G = 32768 && 0.5G = 8192
             if totalAccelMag > 8192 and totalAccelMag < 32768:
-                accel_correction = arctan(adata["x"] / adata["y"]) * (180 / pi)
+                accel_correction = atan(adata["x"] / adata["y"]) * (180 / pi)
                 self.gyro_accel_head = ((self.gyro_accel_head * 0.98) + (accel_correction * 0.02) * 0.6) + (self.magnometer_heading() * 0.4)
 
             time.sleep(dt)
@@ -90,7 +90,7 @@ class NineDOF:
 
             # Sensitivity = -2 to 2 G at 16Bit -> 2G = 32768 && 0.5G = 8192
             if totalAccelMag > 8192 and totalAccelMag < 32768:
-                accel_correction = arctan(adata["x"] / adata["y"]) * (180 / pi)
+                accel_correction = atan(adata["x"] / adata["y"]) * (180 / pi)
                 self.gyro_accel_head = (self.gyro_accel_head * 0.98) + (accel_correction * 0.02)
 
             time.sleep(dt)
