@@ -1,5 +1,5 @@
 import time, board, busio, adafruit_lsm9ds1, multiprocessing
-from math import atan, pi
+from math import atan2, pi
 
 class NineDOF:
     def __init__(self):
@@ -26,7 +26,7 @@ class NineDOF:
             else:
                 return 0
 
-        direction = atan(data["y"] / data["x"]) * (180 / pi)
+        direction = atan2(data["y"], data["x"]) * (180 / pi)
 
         while direction < 0:
             direction += 360
