@@ -44,7 +44,7 @@ class NineDOF:
 
     def gyro_accel_heading_begin_tracking(self, dt):
         self._gyro_accel_reset()
-        self.gyro_accel_thread = multiprocessing.Process(target=self._thread_gyro_accel_heading, args=(dt))
+        self.gyro_accel_thread = multiprocessing.Process(target=self._thread_gyro_accel_heading, args=(dt,))
         self.gyro_accel_thread.daemon = True
         self.gyro_accel_thread.start()
 
@@ -54,7 +54,7 @@ class NineDOF:
 
     def comb_heading_begin_tracking(self, dt):
         self._gyro_accel_reset()
-        self.comb_thread = multiprocessing.Process(target=self._thread_3_heading, args=(dt))
+        self.comb_thread = multiprocessing.Process(target=self._thread_3_heading, args=(dt,))
         self.comb_thread.daemon = True
         self.comb_thread.start()
 
