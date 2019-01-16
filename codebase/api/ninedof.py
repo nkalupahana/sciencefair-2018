@@ -111,13 +111,13 @@ class NineDOF:
     def _thread_gyro_heading(self, dt, q):
         global GYRO_Z_CALIBRATION
         hold = 0
-        avg = [] #- CALIBRATION CODE
+        #avg = [] #- CALIBRATION CODE
         while True:
             # This function needs to be run
             gdata = self._gyro()
             hold = hold + ((gdata["z"] + GYRO_Z_CALIBRATION) * dt)
             q.put(hold)
-            avg.append(gdata["z"]) #- CALIBRATION CODE
-            print("Avg: " + str(mean(avg))) #- CALIBRATION CODE
+            #avg.append(gdata["z"]) #- CALIBRATION CODE
+            #print("Avg: " + str(mean(avg))) #- CALIBRATION CODE
 
             time.sleep(dt)
