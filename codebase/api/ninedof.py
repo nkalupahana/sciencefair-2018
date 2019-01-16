@@ -115,7 +115,7 @@ class NineDOF:
             gdata = self._gyro()
             hold = hold + (gdata["z"] * dt)
             q.put(hold)
-            avg.push(gdata["z"])
+            avg.append(gdata["z"])
             print("Avg: " + mean(avg))
 
             time.sleep(dt)
