@@ -37,6 +37,7 @@ class NineDOF:
         return direction
 
     def get_heading(self):
+        print(self)
         return self.head
 
     def _head_reset(self):
