@@ -107,11 +107,14 @@ class NineDOF:
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt, q):
+        hold = 0
         while True:
             # This function needs to be run
             gdata = self._gyro()
             print(gdata["z"] * dt)
             print(self)
-            q.put(gdata["z"] * dt)
+            hold = hold + (gdata["z"] * dt)
+            q.put(hold)
+
 
             time.sleep(dt)
