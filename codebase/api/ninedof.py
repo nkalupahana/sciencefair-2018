@@ -48,7 +48,7 @@ class NineDOF:
     def gyro_heading_begin_tracking(self, dt):
         self._head_reset()
         self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_heading, args=(dt, ))
-        self.gyro_thread.daemon = True
+        #self.gyro_thread.daemon = True
         self.gyro_thread.start()
 
     def gyro_heading_terminate(self):
