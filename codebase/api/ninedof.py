@@ -108,8 +108,8 @@ class NineDOF:
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt):
-        global mhh
         while True:
+            global mhh
             # This function needs to be run
             gdata = self._gyro()
             print(gdata["z"] * dt)
