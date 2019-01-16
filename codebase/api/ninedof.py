@@ -43,7 +43,7 @@ class NineDOF:
         self.head = 0
 
     def _add_on(self, hd):
-        self.head += hd
+        self.head = self.head + hd
 
     def gyro_heading_begin_tracking(self, dt):
         self._head_reset()
