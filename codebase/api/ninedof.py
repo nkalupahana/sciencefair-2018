@@ -1,6 +1,7 @@
 import time, board, busio, adafruit_lsm9ds1, multiprocessing
 from math import atan2, pi
 from statistics import mean
+from globals import GYRO_Z_CALIBRATION
 
 class NineDOF:
     def __init__(self):
@@ -108,14 +109,15 @@ class NineDOF:
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt, q):
+        global GYRO_Z_CALIBRATION
         hold = 0
-        avg = []
+        #avg = [] - CALIBRATION CODE
         while True:
             # This function needs to be run
             gdata = self._gyro()
-            hold = hold + (gdata["z"] * dt)
+            hold = hold + (((gdata["z"] + GYRO_Z_CALIBRATION) * dt)
             q.put(hold)
-            avg.append(gdata["z"])
-            print("Avg: " + str(mean(avg)))
+            #avg.append(gdata["z"]) - CALIBRATION CODE
+            #print("Avg: " + str(mean(avg))) - CALIBRATION CODE
 
             time.sleep(dt)
