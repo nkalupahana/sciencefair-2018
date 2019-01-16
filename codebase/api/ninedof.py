@@ -116,6 +116,6 @@ class NineDOF:
             hold = hold + (gdata["z"] * dt)
             q.put(hold)
             avg.append(gdata["z"])
-            print("Avg: " + mean(avg))
+            print("Avg: " + str(mean(avg)))
 
             time.sleep(dt)
