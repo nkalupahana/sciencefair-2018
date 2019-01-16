@@ -1,5 +1,6 @@
 import time, board, busio, adafruit_lsm9ds1, multiprocessing
 from math import atan2, pi
+from statistics import mean
 
 class NineDOF:
     def __init__(self):
@@ -108,10 +109,13 @@ class NineDOF:
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt, q):
         hold = 0
+        avg = []
         while True:
             # This function needs to be run
             gdata = self._gyro()
             hold = hold + (gdata["z"] * dt)
             q.put(hold)
+            avg.push(gdata["z"])
+            print("Avg: " + mean(avg))
 
             time.sleep(dt)
