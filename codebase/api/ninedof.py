@@ -111,10 +111,7 @@ class NineDOF:
         while True:
             # This function needs to be run
             gdata = self._gyro()
-            print(gdata["z"] * dt)
-            print(self)
             hold = hold + (gdata["z"] * dt)
             q.put(hold)
-
 
             time.sleep(dt)
