@@ -37,11 +37,13 @@ class NineDOF:
         return direction
 
     def get_heading(self):
-        print(self)
         return self.head
 
     def _head_reset(self):
         self.head = 0
+
+    def _add_on(self, hd):
+        self.head += hd
 
     def gyro_heading_begin_tracking(self, dt):
         self._head_reset()
@@ -108,15 +110,11 @@ class NineDOF:
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt):
-        global mhh
-        mhh = 0
-        
         while True:
-            global mhh
             # This function needs to be run
             gdata = self._gyro()
             print(gdata["z"] * dt)
             print(self)
-            mhh += gdata["z"] * dt
+            self._add_on(gdata["z"] * dt)
 
             time.sleep(dt)

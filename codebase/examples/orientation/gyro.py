@@ -8,11 +8,5 @@ orient = NineDOF()
 orient.gyro_heading_begin_tracking(0.1)
 
 while True:
-    global mhh
-    try:
-        print(mhh)
-    except:
-        print("Waiting...")
-        pass
-    
+    print(orient.get_heading())
     sleep(0.1)
