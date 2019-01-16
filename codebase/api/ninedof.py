@@ -115,7 +115,7 @@ class NineDOF:
         while True:
             # This function needs to be run
             gdata = self._gyro()
-            hold = hold + (((gdata["z"] + GYRO_Z_CALIBRATION) * dt)
+            hold = hold + ((gdata["z"] + GYRO_Z_CALIBRATION) * dt)
             q.put(hold)
             #avg.append(gdata["z"]) - CALIBRATION CODE
             #print("Avg: " + str(mean(avg))) - CALIBRATION CODE
