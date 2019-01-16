@@ -113,6 +113,6 @@ class NineDOF:
             print(dt)
             print(gdata["z"] * dt)
             print(self.head)
-            self.head += gdata["z"] * dt
+            NineDOF.head += gdata["z"] * dt
 
             time.sleep(dt)
