@@ -36,14 +36,24 @@ class NineDOF:
 
         return direction
 
-    def gyro_accel_heading(self):
-        return self.gyro_accel_head
+    def get_heading(self):
+        return self.head
 
-    def _gyro_accel_reset(self):
-        self.gyro_accel_head = 0
+    def _head_reset(self):
+        self.head = 0
+
+    def gyro_heading_begin_tracking(self, dt):
+        self._head_reset()
+        self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_heading, args=(dt,))
+        self.gyro_thread.daemon = True
+        self.gyro_thread.start()
+
+    def gyro_heading_terminate(self):
+        self.gyro_thread.terminate()
+        self.gyro_thread = None
 
     def gyro_accel_heading_begin_tracking(self, dt):
-        self._gyro_accel_reset()
+        self._head_reset()
         self.gyro_accel_thread = multiprocessing.Process(target=self._thread_gyro_accel_heading, args=(dt,))
         self.gyro_accel_thread.daemon = True
         self.gyro_accel_thread.start()
@@ -53,7 +63,7 @@ class NineDOF:
         self.gyro_accel_thread = None
 
     def comb_heading_begin_tracking(self, dt):
-        self._gyro_accel_reset()
+        self._head_reset()
         self.comb_thread = multiprocessing.Process(target=self._thread_3_heading, args=(dt,))
         self.comb_thread.daemon = True
         self.comb_thread.start()
@@ -66,7 +76,7 @@ class NineDOF:
         while True:
             # This function needs to be run
             gdata = self._gyro()
-            self.gyro_accel_head += gdata["z"] * dt
+            self.head += gdata["z"] * dt
 
             adata = self._accel()
             totalAccelMag = abs(adata["x"]) + abs(adata["y"]) + abs(adata["z"])
@@ -74,7 +84,7 @@ class NineDOF:
             # Sensitivity = -2 to 2 G at 16Bit -> 2G = 32768 && 0.5G = 8192
             if totalAccelMag > 8192 and totalAccelMag < 32768:
                 accel_correction = atan(adata["x"] / adata["y"]) * (180 / pi)
-                self.gyro_accel_head = ((self.gyro_accel_head * 0.98) + (accel_correction * 0.02) * 0.6) + (self.magnometer_heading() * 0.4)
+                self.head = ((self.head * 0.98) + (accel_correction * 0.02) * 0.6) + (self.magnometer_heading() * 0.4)
 
             time.sleep(dt)
 
@@ -83,7 +93,7 @@ class NineDOF:
         while True:
             # This function needs to be run
             gdata = self._gyro()
-            self.gyro_accel_head += gdata["z"] * dt
+            self.head += gdata["z"] * dt
 
             adata = self._accel()
             totalAccelMag = abs(adata["x"]) + abs(adata["y"]) + abs(adata["z"])
@@ -91,6 +101,15 @@ class NineDOF:
             # Sensitivity = -2 to 2 G at 16Bit -> 2G = 32768 && 0.5G = 8192
             if totalAccelMag > 8192 and totalAccelMag < 32768:
                 accel_correction = atan(adata["x"] / adata["y"]) * (180 / pi)
-                self.gyro_accel_head = (self.gyro_accel_head * 0.98) + (accel_correction * 0.02)
+                self.head = (self.head * 0.98) + (accel_correction * 0.02)
+
+            time.sleep(dt)
+
+    # This function needs to be run continually in a thread to function (it performs integration over time)
+    def _thread_gyro_heading(self, dt):
+        while True:
+            # This function needs to be run
+            gdata = self._gyro()
+            self.head += gdata["z"] * dt
 
             time.sleep(dt)
