@@ -5,8 +5,9 @@ from time import sleep
 from api.ninedof import *
 
 orient = NineDOF()
-orient.gyro_heading_begin_tracking(0.1)
+head = 0
+orient.gyro_heading_begin_tracking(0.1, head)
 
 while True:
-    print(orient.get_heading())
+    print(head)
     sleep(0.1)
