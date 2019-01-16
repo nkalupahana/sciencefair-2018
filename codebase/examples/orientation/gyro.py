@@ -5,9 +5,11 @@ from time import sleep
 from api.ninedof import *
 
 orient = NineDOF()
-head = 0
-orient.gyro_heading_begin_tracking(0.1, head)
+global mhh
+mhh = 0
+orient.gyro_heading_begin_tracking(0.1)
 
 while True:
-    print(head)
+    global mhh
+    print(mhh)
     sleep(0.1)
