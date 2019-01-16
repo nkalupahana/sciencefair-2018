@@ -9,5 +9,10 @@ orient.gyro_heading_begin_tracking(0.1)
 
 while True:
     global mhh
-    print(mhh)
+    try:
+        print(mhh)
+    except:
+        print("Waiting...")
+        pass
+    
     sleep(0.1)
