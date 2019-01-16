@@ -112,6 +112,7 @@ class NineDOF:
             gdata = self._gyro()
             print(dt)
             print(gdata["z"] * dt)
+            print(self.head)
             self.head += gdata["z"] * dt
 
             time.sleep(dt)
