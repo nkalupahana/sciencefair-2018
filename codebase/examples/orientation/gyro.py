@@ -8,5 +8,5 @@ orient = NineDOF()
 orient.gyro_heading_begin_tracking(0.1)
 
 while True:
-    print(orient.get_heading())
+    print(test_hd)
     sleep(0.1)
