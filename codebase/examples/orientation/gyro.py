@@ -2,11 +2,12 @@ import sys
 sys.path.append("../../")
 
 from time import sleep
+from multiprocessing import Queue
 from api.ninedof import *
 
 orient = NineDOF()
+q = Queue()
 orient.gyro_heading_begin_tracking(0.1)
 
 while True:
-    print(test_hd)
-    sleep(0.1)
+    print(q.get())

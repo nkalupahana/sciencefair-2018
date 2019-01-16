@@ -1,8 +1,6 @@
 import time, board, busio, adafruit_lsm9ds1, multiprocessing
 from math import atan2, pi
 
-test_hd = 0
-
 class NineDOF:
     def __init__(self):
         i2c = busio.I2C(board.SCL, board.SDA)
@@ -44,9 +42,9 @@ class NineDOF:
     def _head_reset(self):
         self.head = 0
 
-    def gyro_heading_begin_tracking(self, dt):
+    def gyro_heading_begin_tracking(self, dt, q):
         self._head_reset()
-        self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_heading, args=(dt, ))
+        self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_heading, args=(dt, q, ))
         self.gyro_thread.daemon = True
         self.gyro_thread.start()
 
@@ -108,13 +106,12 @@ class NineDOF:
             time.sleep(dt)
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
-    def _thread_gyro_heading(self, dt):
+    def _thread_gyro_heading(self, dt, q):
         while True:
-            global test_hd
             # This function needs to be run
             gdata = self._gyro()
             print(gdata["z"] * dt)
             print(self)
-            test_hd += gdata["z"] * dt
-            
+            q.put(gdata["z"] * dt)
+
             time.sleep(dt)
