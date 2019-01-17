@@ -44,6 +44,12 @@ class NineDOF:
     def _head_reset(self):
         self.head = 0
 
+    def gyro_accel_calibration(self, dt):
+        self._head_reset()
+        self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_accel_heading_calibration, args=(dt, ))
+        self.gyro_thread.daemon = True
+        self.gyro_thread.start()
+
     def gyro_heading_begin_tracking(self, dt, q):
         self._head_reset()
         self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_heading, args=(dt, q, ))
@@ -54,7 +60,7 @@ class NineDOF:
         self.gyro_thread.terminate()
         self.gyro_thread = None
 
-    def gyro_accel_heading_begin_tracking(self, dt):
+    """def gyro_accel_heading_begin_tracking(self, dt):
         self._head_reset()
         self.gyro_accel_thread = multiprocessing.Process(target=self._thread_gyro_accel_heading, args=(dt,))
         self.gyro_accel_thread.daemon = True
@@ -62,11 +68,11 @@ class NineDOF:
 
     def gyro_accel_heading_terminate(self):
         self.gyro_accel_thread.terminate()
-        self.gyro_accel_thread = None
+        self.gyro_accel_thread = None"""
 
     def comb_heading_begin_tracking(self, dt):
         self._head_reset()
-        self.comb_thread = multiprocessing.Process(target=self._thread_3_heading, args=(dt,))
+        self.comb_thread = multiprocessing.Process(target=self._thread_3_heading, args=(dt,q,))
         self.comb_thread.daemon = True
         self.comb_thread.start()
 
@@ -91,7 +97,7 @@ class NineDOF:
             time.sleep(dt)
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
-    def _thread_gyro_accel_heading(self, dt):
+    """def _thread_gyro_accel_heading(self, dt):
         while True:
             # This function needs to be run
             gdata = self._gyro()
@@ -105,7 +111,7 @@ class NineDOF:
                 accel_correction = atan(adata["x"] / adata["y"]) * (180 / pi)
                 self.head = (self.head * 0.98) + (accel_correction * 0.02)
 
-            time.sleep(dt)
+            time.sleep(dt)"""
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt, q):
@@ -121,3 +127,35 @@ class NineDOF:
             #print("Avg: " + str(mean(avg))) #- CALIBRATION CODE
 
             time.sleep(dt)
+
+        def _thread_gyro_accel_heading_calibration(self, dt):
+            sleep(10)
+            avggx = []
+            avggy = []
+            avggz = []
+
+            avgax = []
+            avgay = []
+            avgaz = []
+
+            while True:
+                gdata = self._gyro()
+                adata = self._accel()
+
+                avggx.append(gdata["x"])
+                avggy.append(gdata["y"])
+                avggz.append(gdata["z"])
+
+                avgax.append(adata["x"])
+                avgay.append(adata["y"])
+                avgaz.append(adata["z"])
+
+                print("Avg gx: " + str(mean(avggx)))
+                print("Avg gy: " + str(mean(avggy)))
+                print("Avg gz: " + str(mean(avggz)))
+
+                print("Avg ax: " + str(mean(avgax)))
+                print("Avg ay: " + str(mean(avgay)))
+                print("Avg az: " + str(mean(avgaz)))
+
+                time.sleep(dt)
