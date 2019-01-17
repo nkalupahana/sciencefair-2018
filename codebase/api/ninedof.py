@@ -129,7 +129,7 @@ class NineDOF:
             time.sleep(dt)
 
         def _thread_gyro_accel_heading_calibration(self, dt):
-            sleep(10)
+            time.sleep(10)
             avggx = []
             avggy = []
             avggz = []
