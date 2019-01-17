@@ -46,7 +46,7 @@ class NineDOF:
 
     def gyro_accel_calibration(self, dt):
         self._head_reset()
-        self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_accel_heading_calibration, args=(dt, ))
+        self.gyro_thread = multiprocessing.Process(target=self._thread_calibration, args=(dt, ))
         self.gyro_thread.daemon = True
         self.gyro_thread.start()
 
@@ -128,7 +128,7 @@ class NineDOF:
 
             time.sleep(dt)
 
-        def _thread_gyro_accel_heading_calibration(self, dt):
+        def _thread_calibration(self, dt):
             time.sleep(10)
             avggx = []
             avggy = []
