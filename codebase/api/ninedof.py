@@ -128,34 +128,34 @@ class NineDOF:
 
             time.sleep(dt)
 
-        def _thread_calibration(self, dt):
-            time.sleep(10)
-            avggx = []
-            avggy = []
-            avggz = []
+    def _thread_calibration(self, dt):
+        time.sleep(10)
+        avggx = []
+        avggy = []
+        avggz = []
 
-            avgax = []
-            avgay = []
-            avgaz = []
+        avgax = []
+        avgay = []
+        avgaz = []
 
-            while True:
-                gdata = self._gyro()
-                adata = self._accel()
+        while True:
+            gdata = self._gyro()
+            adata = self._accel()
 
-                avggx.append(gdata["x"])
-                avggy.append(gdata["y"])
-                avggz.append(gdata["z"])
+            avggx.append(gdata["x"])
+            avggy.append(gdata["y"])
+            avggz.append(gdata["z"])
 
-                avgax.append(adata["x"])
-                avgay.append(adata["y"])
-                avgaz.append(adata["z"])
+            avgax.append(adata["x"])
+            avgay.append(adata["y"])
+            avgaz.append(adata["z"])
 
-                print("Avg gx: " + str(mean(avggx)))
-                print("Avg gy: " + str(mean(avggy)))
-                print("Avg gz: " + str(mean(avggz)))
+            print("Avg gx: " + str(mean(avggx)))
+            print("Avg gy: " + str(mean(avggy)))
+            print("Avg gz: " + str(mean(avggz)))
 
-                print("Avg ax: " + str(mean(avgax)))
-                print("Avg ay: " + str(mean(avgay)))
-                print("Avg az: " + str(mean(avgaz)))
+            print("Avg ax: " + str(mean(avgax)))
+            print("Avg ay: " + str(mean(avgay)))
+            print("Avg az: " + str(mean(avgaz)))
 
-                time.sleep(dt)
+            time.sleep(dt)
