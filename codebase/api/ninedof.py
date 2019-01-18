@@ -1,7 +1,8 @@
 import time, board, busio, adafruit_lsm9ds1, multiprocessing
 from math import atan2, pi
 from statistics import mean
-from globals import GYRO_Z_CALIBRATION
+from MadgwickFilter import *
+from globals import MAG_OFFSETS, GYRO_OFFSETS, ACCEL_OFFSETS, MAG_MATRIX
 
 class NineDOF:
     def __init__(self):
@@ -20,38 +21,54 @@ class NineDOF:
         gyro_x, gyro_y, gyro_z = self.sensor.gyro
         return {"x": gyro_x, "y": gyro_y, "z": gyro_z}
 
-    def magnometer_heading(self):
-        data = self._mag()
-        if data["x"] == 0:
-            if data["y"] < 0:
-                return 90
-            else:
-                return 0
-
-        direction = atan2(data["y"], data["x"]) * (180 / pi)
-
-        while direction < 0:
-            direction += 360
-
-        while direction > 360:
-            direction -= 360
-
-        return direction
-
-    def get_heading(self):
-        return self.head
-
-    def _head_reset(self):
-        self.head = 0
-
-    def gyro_accel_calibration(self, dt):
-        self._head_reset()
-        self.gyro_thread = multiprocessing.Process(target=self._thread_calibration, args=(dt, ))
+    def filter_begin_tracking(self, dt, q):
+        filter = MadgwickFilter(0.02)
+        self.gyro_thread = multiprocessing.Process(target=self._thread_filter_tracking, args=(dt, q, ))
         self.gyro_thread.daemon = True
         self.gyro_thread.start()
 
+    def filter_terminate(self):
+        self.gyro_thread.terminate()
+        self.gyro_thread = None
+
+    def _thread_filter_tracking(self, dt, q, filter):
+        global MAG_OFFSETS
+        global GYRO_OFFSETS
+        global ACCEL_OFFSETS
+        global MAG_MATRIX
+
+        while True:
+            gdata = self._gyro()
+            adata = self._accel()
+            mdata = self._mag()
+
+            _mx = mdata.x - MAG_OFFSETS[0]
+            _my = mdata.y - MAG_OFFSETS[1]
+            _mz = mdata.z - MAG_OFFSETS[2]
+
+            mx = _mx * MAG_MATRIX[0][0] + _my * MAG_MATRIX[0][1] + _mz * MAG_MATRIX[0][2];
+            my = _mx * MAG_MATRIX[1][0] + _my * MAG_MATRIX[1][1] + _mz * MAG_MATRIX[1][2];
+            mz = _mx * MAG_MATRIX[2][0] + _my * MAG_MATRIX[2][1] + _mz * MAG_MATRIX[2][2];
+
+            gx = gdata.x - GYRO_OFFSETS[0]
+            gy = gdata.y - GYRO_OFFSETS[1]
+            gz = gdata.z - GYRO_OFFSETS[2]
+
+            ax = adata.x - ACCEL_OFFSETS[0]
+            ay = adata.y - ACCEL_OFFSETS[1]
+            az = adata.z - ACCEL_OFFSETS[2]
+
+            filter.update(gx,gy,gy,ax,ay,az,mx,my,mz)
+
+            print("X:" + filter.roll())
+            print("Y:" + filter.pitch())
+            print("Z:" + filter.yaw())
+
+            sleep(dt)
+
+    # Calibration and Test Functions below!
+
     def gyro_heading_begin_tracking(self, dt, q):
-        self._head_reset()
         self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_heading, args=(dt, q, ))
         self.gyro_thread.daemon = True
         self.gyro_thread.start()
@@ -59,59 +76,6 @@ class NineDOF:
     def gyro_heading_terminate(self):
         self.gyro_thread.terminate()
         self.gyro_thread = None
-
-    """def gyro_accel_heading_begin_tracking(self, dt):
-        self._head_reset()
-        self.gyro_accel_thread = multiprocessing.Process(target=self._thread_gyro_accel_heading, args=(dt,))
-        self.gyro_accel_thread.daemon = True
-        self.gyro_accel_thread.start()
-
-    def gyro_accel_heading_terminate(self):
-        self.gyro_accel_thread.terminate()
-        self.gyro_accel_thread = None"""
-
-    def comb_heading_begin_tracking(self, dt):
-        self._head_reset()
-        self.comb_thread = multiprocessing.Process(target=self._thread_3_heading, args=(dt,q,))
-        self.comb_thread.daemon = True
-        self.comb_thread.start()
-
-    def comb_heading_terminate(self):
-        self.comb_thread.terminate()
-        self.comb_thread = None
-
-    def _thread_3_heading(self, dt):
-        while True:
-            # This function needs to be run
-            gdata = self._gyro()
-            self.head += gdata["z"] * dt
-
-            adata = self._accel()
-            totalAccelMag = abs(adata["x"]) + abs(adata["y"]) + abs(adata["z"])
-
-            # Sensitivity = -2 to 2 G at 16Bit -> 2G = 32768 && 0.5G = 8192
-            if totalAccelMag > 8192 and totalAccelMag < 32768:
-                accel_correction = atan(adata["x"] / adata["y"]) * (180 / pi)
-                self.head = ((self.head * 0.98) + (accel_correction * 0.02) * 0.6) + (self.magnometer_heading() * 0.4)
-
-            time.sleep(dt)
-
-    # This function needs to be run continually in a thread to function (it performs integration over time)
-    """def _thread_gyro_accel_heading(self, dt):
-        while True:
-            # This function needs to be run
-            gdata = self._gyro()
-            self.head += gdata["z"] * dt
-
-            adata = self._accel()
-            totalAccelMag = abs(adata["x"]) + abs(adata["y"]) + abs(adata["z"])
-
-            # Sensitivity = -2 to 2 G at 16Bit -> 2G = 32768 && 0.5G = 8192
-            if totalAccelMag > 8192 and totalAccelMag < 32768:
-                accel_correction = atan(adata["x"] / adata["y"]) * (180 / pi)
-                self.head = (self.head * 0.98) + (accel_correction * 0.02)
-
-            time.sleep(dt)"""
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt, q):
