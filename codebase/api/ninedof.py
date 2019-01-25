@@ -61,7 +61,7 @@ class NineDOF:
             ay = adata["y"] - ACCEL_OFFSETS[1]
             az = adata["z"] - ACCEL_OFFSETS[2]
 
-            filter.update(gx,gy,gy,ax,ay,az,mx,my,mz)
+            filter.update(gx,gy,gz,ax,ay,az,mx,my,mz)
 
             print("X:" + filter.roll())
             print("Y:" + filter.pitch())

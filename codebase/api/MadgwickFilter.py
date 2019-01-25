@@ -13,7 +13,7 @@ class MadgwickFilter:
         self.q2 = 0.0
         self.q3 = 0.0
 
-    def update(gx,gy,gz,ax,ay,az,mx,my,mz):
+    def update(self,gx,gy,gz,ax,ay,az,mx,my,mz):
         # Use IMU algorithm if magnetometer measurement invalid (avoids NaN in magnetometer normalisation)
         if ((mx == 0.0) and (my == 0.0) and (mz == 0.0)):
             self.updateIMU(gx, gy, gz, ax, ay, az)
@@ -100,7 +100,7 @@ class MadgwickFilter:
         q3 *= recipNorm
         self.anglesComputed = 0
 
-    def updateIMU(gx,gy,gz,ax,ay,az):
+    def updateIMU(self,gx,gy,gz,ax,ay,az):
         # Rate of change of quaternion from gyroscope
         qDot1 = 0.5 * (-self.q1 * gx - self.q2 * gy - self.q3 * gz)
         qDot2 = 0.5 * (self.q0 * gx + self.q2 * gz - self.q3 * gy)
@@ -162,7 +162,7 @@ class MadgwickFilter:
         self.q3 *= recipNorm
         self.anglesComputed = 0
 
-    def invSqrt(x):
+    def invSqrt(self,x):
         halfx = 0.5 * x
         y = x
         i = y
@@ -172,25 +172,25 @@ class MadgwickFilter:
         y = y * (1.5 - (halfx * y * y))
         return y
 
-    def roll():
+    def roll(self):
         if not anglesComputed:
             computeAngles()
 
         return self.roll * 57.29578;
 
-    def pitch():
+    def pitch(self):
         if not anglesComputed:
             computeAngles()
 
         return self.pitch * 57.29578;
 
-    def yaw():
+    def yaw(self):
         if not anglesComputed:
             computeAngles()
 
         return self.yaw * 57.29578 + 180;
 
-    def computeAngles():
+    def computeAngles(self):
         self.roll = atan2(self.q0*self.q1 + self.q2*self.q3, 0.5 - self.q1*self.q1 - self.q2*self.q2);
         self.pitch = asin(-2.0 * (self.q1*self.q3 - self.q0*self.q2));
         self.yaw = atan2(self.q1*self.q2 + self.q0*self.q3, 0.5 - self.q2*self.q2 - self.q3*self.q3);
