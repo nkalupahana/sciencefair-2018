@@ -2,6 +2,7 @@
 # https://github.com/arduino-libraries/MadgwickAHRS/blob/master/src/MadgwickAHRS.cpp
 
 from math import sqrt, atan2, asin
+import struct
 
 class MadgwickFilter:
     def __init__(self, dt):
