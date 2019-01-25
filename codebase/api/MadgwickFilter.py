@@ -180,19 +180,19 @@ class MadgwickFilter:
 
     def roll(self):
         if not self.anglesComputed:
-            computeAngles()
+            self.computeAngles()
 
         return self.roll * 57.29578;
 
     def pitch(self):
         if not self.anglesComputed:
-            computeAngles()
+            self.computeAngles()
 
         return self.pitch * 57.29578;
 
     def yaw(self):
         if not self.anglesComputed:
-            computeAngles()
+            self.computeAngles()
 
         return self.yaw * 57.29578 + 180;
 
