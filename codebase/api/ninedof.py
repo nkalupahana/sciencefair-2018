@@ -63,9 +63,9 @@ class NineDOF:
 
             filter.update(gx,gy,gz,ax,ay,az,mx,my,mz)
 
-            print("X:" + filter.roll())
-            print("Y:" + filter.pitch())
-            print("Z:" + filter.yaw())
+            print("X:" + str(filter.roll()))
+            print("Y:" + str(filter.pitch()))
+            print("Z:" + str(filter.yaw()))
 
             sleep(dt)
 
