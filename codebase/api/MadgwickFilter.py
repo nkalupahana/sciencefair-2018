@@ -178,19 +178,19 @@ class MadgwickFilter:
         y = y * (threehalfs - (x2 * y * y))  # Newton's method
         return y
 
-    def roll(self):
+    def get_roll(self):
         if not self.anglesComputed:
             self.computeAngles()
 
         return self.roll * 57.29578;
 
-    def pitch(self):
+    def get_pitch(self):
         if not self.anglesComputed:
             self.computeAngles()
 
         return self.pitch * 57.29578;
 
-    def yaw(self):
+    def get_yaw(self):
         if not self.anglesComputed:
             self.computeAngles()
 
