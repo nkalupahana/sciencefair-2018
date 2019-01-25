@@ -67,7 +67,7 @@ class NineDOF:
             print("Y:" + str(filter.get_pitch()))
             print("Z:" + str(filter.get_yaw()))
 
-            sleep(dt)
+            time.sleep(dt)
 
     # Calibration and Test Functions below!
 
