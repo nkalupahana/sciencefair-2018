@@ -22,6 +22,23 @@ class NineDOF:
         gyro_x, gyro_y, gyro_z = self.sensor.gyro
         return {"x": gyro_x, "y": gyro_y, "z": gyro_z}
 
+    def magnometer_heading(self,mx,my):
+        if mx == 0:
+            if my < 0:
+                return 90
+            else:
+                return 0
+
+        direction = atan2(my, mx) * (180 / pi)
+
+        while direction < 0:
+            direction += 360
+
+        while direction > 360:
+            direction -= 360
+
+        return direction
+
     def filter_begin_tracking(self, dt, q):
         filter = MadgwickFilter(dt)
         self.gyro_thread = multiprocessing.Process(target=self._thread_filter_tracking, args=(dt, q, filter, ))
@@ -49,11 +66,13 @@ class NineDOF:
             _my = mdata["y"] - MAG_OFFSETS[1]
             _mz = mdata["z"] - MAG_OFFSETS[2]
 
-            mx = _mx * MAG_MATRIX[0][0] + _my * MAG_MATRIX[0][1] + _mz * MAG_MATRIX[0][2];
-            my = _mx * MAG_MATRIX[1][0] + _my * MAG_MATRIX[1][1] + _mz * MAG_MATRIX[1][2];
-            mz = _mx * MAG_MATRIX[2][0] + _my * MAG_MATRIX[2][1] + _mz * MAG_MATRIX[2][2];
+            mx = _mx * MAG_MATRIX[0][0] + _my * MAG_MATRIX[0][1] + _mz * MAG_MATRIX[0][2]
+            my = _mx * MAG_MATRIX[1][0] + _my * MAG_MATRIX[1][1] + _mz * MAG_MATRIX[1][2]
+            mz = _mx * MAG_MATRIX[2][0] + _my * MAG_MATRIX[2][1] + _mz * MAG_MATRIX[2][2]
 
-            gx = gdata["x"] - GYRO_OFFSETS[0]
+            print(magnometer_heading(mx,my))
+
+            """gx = gdata["x"] - GYRO_OFFSETS[0]
             gy = gdata["y"] - GYRO_OFFSETS[1]
             gz = gdata["z"] - GYRO_OFFSETS[2]
 
@@ -65,7 +84,7 @@ class NineDOF:
 
             print("X:" + str(filter.get_roll()))
             print("Y:" + str(filter.get_pitch()))
-            print("Z:" + str(filter.get_yaw()))
+            print("Z:" + str(filter.get_yaw()))"""
 
             time.sleep(dt)
 
