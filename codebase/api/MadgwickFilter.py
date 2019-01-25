@@ -28,13 +28,13 @@ class MadgwickFilter:
         # Compute feedback only if accelerometer measurement valid (avoids NaN in accelerometer normalisation)
         if(not ((ax == 0.0) and (ay == 0.0) and (az == 0.0))):
             # Normalise accelerometer measurement
-            recipNorm = self.invSqrt(ax * ax + ay * ay + az * az)
+            recipNorm = self.inv_sqrt(ax * ax + ay * ay + az * az)
             ax *= recipNorm
             ay *= recipNorm
             az *= recipNorm
 
             # Normalise magnetometer measurement
-            recipNorm = self.invSqrt(mx * mx + my * my + mz * mz)
+            recipNorm = self.inv_sqrt(mx * mx + my * my + mz * mz)
             mx *= recipNorm
             my *= recipNorm
             mz *= recipNorm
@@ -74,7 +74,7 @@ class MadgwickFilter:
             s1 = _2q3 * (2 * q1q3 - _2q0q2 - ax) + _2q0 * (2 * q0q1 + _2q2q3 - ay) - 4 * q1 * (1 - 2 * q1q1 - 2 * q2q2 - az) + _2bz * q3 * (_2bx * (0.5 - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - mx) + (_2bx * q2 + _2bz * q0) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - my) + (_2bx * q3 - _4bz * q1) * (_2bx * (q0q2 + q1q3) + _2bz * (0.5 - q1q1 - q2q2) - mz)
             s2 = -_2q0 * (2 * q1q3 - _2q0q2 - ax) + _2q3 * (2 * q0q1 + _2q2q3 - ay) - 4 * q2 * (1 - 2 * q1q1 - 2 * q2q2 - az) + (-_4bx * q2 - _2bz * q0) * (_2bx * (0.5 - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - mx) + (_2bx * q1 + _2bz * q3) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - my) + (_2bx * q0 - _4bz * q2) * (_2bx * (q0q2 + q1q3) + _2bz * (0.5 - q1q1 - q2q2) - mz)
             s3 = _2q1 * (2 * q1q3 - _2q0q2 - ax) + _2q2 * (2 * q0q1 + _2q2q3 - ay) + (-_4bx * q3 + _2bz * q1) * (_2bx * (0.5 - q2q2 - q3q3) + _2bz * (q1q3 - q0q2) - mx) + (-_2bx * q0 + _2bz * q2) * (_2bx * (q1q2 - q0q3) + _2bz * (q0q1 + q2q3) - my) + _2bx * q1 * (_2bx * (q0q2 + q1q3) + _2bz * (0.5 - q1q1 - q2q2) - mz)
-            recipNorm = self.invSqrt(s0 * s0 + s1 * s1 + s2 * s2 + s3 * s3) # normalise step magnitude
+            recipNorm = self.inv_sqrt(s0 * s0 + s1 * s1 + s2 * s2 + s3 * s3) # normalise step magnitude
             s0 *= recipNorm
             s1 *= recipNorm
             s2 *= recipNorm
@@ -93,7 +93,7 @@ class MadgwickFilter:
         q3 += qDot4 * invSampleFreq
 
         # Normalise quaternion
-        recipNorm = self.invSqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3)
+        recipNorm = self.inv_sqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3)
         q0 *= recipNorm
         q1 *= recipNorm
         q2 *= recipNorm
@@ -110,7 +110,7 @@ class MadgwickFilter:
         # Compute feedback only if accelerometer measurement valid
         if(not ((ax == 0) and (ay == 0) and (az == 0))):
             # Normalise accelerometer measurement
-            recipNorm = self.invSqrt(ax * ax + ay * ay + az * az)
+            recipNorm = self.inv_sqrt(ax * ax + ay * ay + az * az)
 
             ax *= recipNorm
             ay *= recipNorm
@@ -136,7 +136,7 @@ class MadgwickFilter:
             s1 = _4q1 * q3q3 - _2q3 * ax + 4 * q0q0 * q1 - _2q0 * ay - _4q1 + _8q1 * q1q1 + _8q1 * q2q2 + _4q1 * az
             s2 = 4 * q0q0 * q2 + _2q0 * ax + _4q2 * q3q3 - _2q3 * ay - _4q2 + _8q2 * q1q1 + _8q2 * q2q2 + _4q2 * az
             s3 = 4 * q1q1 * q3 - _2q1 * ax + 4 * q2q2 * q3 - _2q2 * ay
-            recipNorm = self.invSqrt(s0 * s0 + s1 * s1 + s2 * s2 + s3 * s3) # normalise step magnitude
+            recipNorm = self.inv_sqrt(s0 * s0 + s1 * s1 + s2 * s2 + s3 * s3) # normalise step magnitude
             s0 *= recipNorm
             s1 *= recipNorm
             s2 *= recipNorm
@@ -155,21 +155,26 @@ class MadgwickFilter:
         self.q3 += qDot4 * invSampleFreq
 
         # Normalise quaternion
-        recipNorm = self.invSqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3)
+        recipNorm = self.inv_sqrt(q0 * q0 + q1 * q1 + q2 * q2 + q3 * q3)
         self.q0 *= recipNorm
         self.q1 *= recipNorm
         self.q2 *= recipNorm
         self.q3 *= recipNorm
         self.anglesComputed = 0
 
-    def invSqrt(self,x):
-        halfx = 0.5 * x
-        y = x
-        i = y
-        i = 0x5f3759df - (i>>1)
-        y = i
-        y = y * (1.5 - (halfx * y * y))
-        y = y * (1.5 - (halfx * y * y))
+    # http://ajcr.net/fast-inverse-square-root-python/
+    def inv_sqrt(self, number):
+        threehalfs = 1.5
+        x2 = number * 0.5
+        y = number
+
+        packed_y = struct.pack('f', y)
+        i = struct.unpack('i', packed_y)[0]  # treat float's bytes as int
+        i = 0x5f3759df - (i >> 1)            # arithmetic with magic number
+        packed_i = struct.pack('i', i)
+        y = struct.unpack('f', packed_i)[0]  # treat int's bytes as float
+
+        y = y * (threehalfs - (x2 * y * y))  # Newton's method
         return y
 
     def roll(self):
