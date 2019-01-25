@@ -2,6 +2,7 @@ import time, board, busio, adafruit_lsm9ds1, multiprocessing
 from math import atan2, pi
 from statistics import mean
 from MadgwickFilter import *
+from datetime import datetime, timedelta
 from globals import MAG_OFFSETS, GYRO_OFFSETS, ACCEL_OFFSETS, MAG_MATRIX
 
 class NineDOF:
@@ -36,6 +37,8 @@ class NineDOF:
         global GYRO_OFFSETS
         global ACCEL_OFFSETS
         global MAG_MATRIX
+
+        print(GYRO_OFFSETS[0])
 
         while True:
             gdata = self._gyro()
@@ -92,8 +95,7 @@ class NineDOF:
 
             time.sleep(dt)
 
-    def _thread_calibration(self, dt):
-        time.sleep(10)
+    def gyro_accel_zero(self):
         avggx = []
         avggy = []
         avggz = []
@@ -102,7 +104,9 @@ class NineDOF:
         avgay = []
         avgaz = []
 
-        while True:
+        wait = datetime.now() + timedelta(seconds=1)
+
+        while datetime.now() < wait:
             gdata = self._gyro()
             adata = self._accel()
 
@@ -114,12 +118,13 @@ class NineDOF:
             avgay.append(adata["y"])
             avgaz.append(adata["z"])
 
-            print("Avg gx: " + str(mean(avggx)))
-            print("Avg gy: " + str(mean(avggy)))
-            print("Avg gz: " + str(mean(avggz)))
+            time.sleep(0.01)
 
-            print("Avg ax: " + str(mean(avgax)))
-            print("Avg ay: " + str(mean(avgay)))
-            print("Avg az: " + str(mean(avgaz)))
+        global GYRO_OFFSETS
+        global ACCEL_OFFSETS
 
-            time.sleep(dt)
+        GYRO_OFFSETS = [mean(avggx), mean(avggy), mean(avggz)]
+        ACCEL_OFFSETS = [mean(avgax), mean(avgay), mean(avgaz)]
+        print(mean(avggx))
+
+        return
