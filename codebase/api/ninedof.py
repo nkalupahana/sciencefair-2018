@@ -45,21 +45,21 @@ class NineDOF:
             adata = self._accel()
             mdata = self._mag()
 
-            _mx = mdata.x - MAG_OFFSETS[0]
-            _my = mdata.y - MAG_OFFSETS[1]
-            _mz = mdata.z - MAG_OFFSETS[2]
+            _mx = mdata["x"] - MAG_OFFSETS[0]
+            _my = mdata["y"] - MAG_OFFSETS[1]
+            _mz = mdata["z"] - MAG_OFFSETS[2]
 
             mx = _mx * MAG_MATRIX[0][0] + _my * MAG_MATRIX[0][1] + _mz * MAG_MATRIX[0][2];
             my = _mx * MAG_MATRIX[1][0] + _my * MAG_MATRIX[1][1] + _mz * MAG_MATRIX[1][2];
             mz = _mx * MAG_MATRIX[2][0] + _my * MAG_MATRIX[2][1] + _mz * MAG_MATRIX[2][2];
 
-            gx = gdata.x - GYRO_OFFSETS[0]
-            gy = gdata.y - GYRO_OFFSETS[1]
-            gz = gdata.z - GYRO_OFFSETS[2]
+            gx = gdata["x"] - GYRO_OFFSETS[0]
+            gy = gdata["y"] - GYRO_OFFSETS[1]
+            gz = gdata["z"] - GYRO_OFFSETS[2]
 
-            ax = adata.x - ACCEL_OFFSETS[0]
-            ay = adata.y - ACCEL_OFFSETS[1]
-            az = adata.z - ACCEL_OFFSETS[2]
+            ax = adata["x"] - ACCEL_OFFSETS[0]
+            ay = adata["y"] - ACCEL_OFFSETS[1]
+            az = adata["z"] - ACCEL_OFFSETS[2]
 
             filter.update(gx,gy,gy,ax,ay,az,mx,my,mz)
 
