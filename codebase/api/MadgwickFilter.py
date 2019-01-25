@@ -150,10 +150,10 @@ class MadgwickFilter:
             qDot4 -= self.beta * s3
 
         # Integrate rate of change of quaternion to yield quaternion
-        self.q0 += qDot1 * invSampleFreq
-        self.q1 += qDot2 * invSampleFreq
-        self.q2 += qDot3 * invSampleFreq
-        self.q3 += qDot4 * invSampleFreq
+        self.q0 += qDot1 * self.invSampleFreq
+        self.q1 += qDot2 * self.invSampleFreq
+        self.q2 += qDot3 * self.invSampleFreq
+        self.q3 += qDot4 * self.invSampleFreq
 
         # Normalise quaternion
         recipNorm = self.inv_sqrt(self.q0 * self.q0 + self.q1 * self.q1 + self.q2 * self.q2 + self.q3 * self.q3)
