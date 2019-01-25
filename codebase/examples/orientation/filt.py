@@ -9,7 +9,8 @@ orient = NineDOF()
 print("Zeroing...")
 orient.gyro_accel_zero()
 print("Filter starting...")
-orient.filter_begin_tracking(0.02)
+q = Queue()
+orient.filter_begin_tracking(0.02,q)
 
 while True:
     sleep(5)
