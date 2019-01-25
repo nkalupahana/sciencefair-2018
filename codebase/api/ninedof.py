@@ -22,8 +22,8 @@ class NineDOF:
         return {"x": gyro_x, "y": gyro_y, "z": gyro_z}
 
     def filter_begin_tracking(self, dt, q):
-        filter = MadgwickFilter(0.02)
-        self.gyro_thread = multiprocessing.Process(target=self._thread_filter_tracking, args=(dt, q, ))
+        filter = MadgwickFilter(dt)
+        self.gyro_thread = multiprocessing.Process(target=self._thread_filter_tracking, args=(dt, q, filter, ))
         self.gyro_thread.daemon = True
         self.gyro_thread.start()
 
