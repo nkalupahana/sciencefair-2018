@@ -62,15 +62,20 @@ class NineDOF:
             adata = self._accel()
             mdata = self._mag()
 
-            mx = mdata["x"] - MAG_OFFSETS[0]
-            my = mdata["y"] - MAG_OFFSETS[1]
-            mz = mdata["z"] - MAG_OFFSETS[2]
+            mdata["x"] = mdata["x"] * 1000;
+            mdata["y"] = mdata["y"] * 1000;
+            mdata["z"] = mdata["z"] * 1000;
 
-            """mx = _mx * MAG_MATRIX[0][0] + _my * MAG_MATRIX[0][1] + _mz * MAG_MATRIX[0][2]
+
+            _mx = mdata["x"] - MAG_OFFSETS[0]
+            _my = mdata["y"] - MAG_OFFSETS[1]
+            _mz = mdata["z"] - MAG_OFFSETS[2]
+
+            mx = _mx * MAG_MATRIX[0][0] + _my * MAG_MATRIX[0][1] + _mz * MAG_MATRIX[0][2]
             my = _mx * MAG_MATRIX[1][0] + _my * MAG_MATRIX[1][1] + _mz * MAG_MATRIX[1][2]
-            mz = _mx * MAG_MATRIX[2][0] + _my * MAG_MATRIX[2][1] + _mz * MAG_MATRIX[2][2]"""
+            mz = _mx * MAG_MATRIX[2][0] + _my * MAG_MATRIX[2][1] + _mz * MAG_MATRIX[2][2]
 
-            print(self.magnometer_heading(my,mz))
+            print(self.magnometer_heading(mx,mz))
 
             """gx = gdata["x"] - GYRO_OFFSETS[0]
             gy = gdata["y"] - GYRO_OFFSETS[1]
