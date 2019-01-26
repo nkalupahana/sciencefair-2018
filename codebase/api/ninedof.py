@@ -70,7 +70,7 @@ class NineDOF:
             my = _mx * MAG_MATRIX[1][0] + _my * MAG_MATRIX[1][1] + _mz * MAG_MATRIX[1][2]
             mz = _mx * MAG_MATRIX[2][0] + _my * MAG_MATRIX[2][1] + _mz * MAG_MATRIX[2][2]"""
 
-            print(self.magnometer_heading(mx,mz))
+            print(self.magnometer_heading(my,mz))
 
             """gx = gdata["x"] - GYRO_OFFSETS[0]
             gy = gdata["y"] - GYRO_OFFSETS[1]
