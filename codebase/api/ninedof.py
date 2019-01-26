@@ -63,7 +63,7 @@ class NineDOF:
             mdata = self._mag()
 
             mx = mdata["x"] - MAG_OFFSETS[0]
-            _my = mdata["y"] - MAG_OFFSETS[1]
+            my = mdata["y"] - MAG_OFFSETS[1]
             mz = mdata["z"] - MAG_OFFSETS[2]
 
             """mx = _mx * MAG_MATRIX[0][0] + _my * MAG_MATRIX[0][1] + _mz * MAG_MATRIX[0][2]
