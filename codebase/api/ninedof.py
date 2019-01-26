@@ -37,7 +37,7 @@ class NineDOF:
         while direction > 360:
             direction -= 360
 
-        return direction
+        return direction * 5.92
 
     def filter_begin_tracking(self, dt, q):
         filter = MadgwickFilter(dt)
