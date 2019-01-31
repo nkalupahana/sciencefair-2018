@@ -10,7 +10,7 @@ orient = NineDOF()
 q = Queue()
 
 orient.gyro_accel_zero()
-orient.gyro_heading_begin_tracking(0.01, q)
+orient.gyro_heading_begin_tracking(0.005, q)
 
 while True:
     print(q.get())
