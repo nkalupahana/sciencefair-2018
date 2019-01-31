@@ -8,7 +8,9 @@ from api.ninedof import *
 
 orient = NineDOF()
 q = Queue()
-orient.gyro_heading_begin_tracking(0.04, q)
+
+orient.gyro_accel_zero()
+orient.gyro_heading_begin_tracking(0.01, q)
 
 while True:
     print(q.get())

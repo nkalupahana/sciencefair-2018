@@ -104,18 +104,47 @@ class NineDOF:
         self.gyro_thread.terminate()
         self.gyro_thread = None
 
+    def ga_heading_begin_tracking(self, dt, q):
+        self.gyro_thread = multiprocessing.Process(target=self._thread_ga_heading, args=(dt, q, ))
+        self.gyro_thread.daemon = True
+        self.gyro_thread.start()
+
+    def ga_heading_terminate(self):
+        self.gyro_thread.terminate()
+        self.gyro_thread = None
+
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt, q):
-        global GYRO_Z_CALIBRATION
+        global GYRO_OFFSETS
         hold = 0
-        #avg = [] #- CALIBRATION CODE
         while True:
             # This function needs to be run
             gdata = self._gyro()
-            hold = hold + ((gdata["z"] + GYRO_Z_CALIBRATION) * dt)
+            hold = hold + ((gdata["z"] - GYRO_OFFSETS[2]) * dt)
             q.put(hold)
-            #avg.append(gdata["z"]) #- CALIBRATION CODE
-            #print("Avg: " + str(mean(avg))) #- CALIBRATION CODE
+
+            time.sleep(dt)
+
+    # This function needs to be run continually in a thread to function (it performs integration over time)
+    def _thread_ga_heading(self, dt, q):
+        global GYRO_OFFSETS
+
+        hold = 0
+        while True:
+            # This function needs to be run
+            gdata = self._gyro()
+            adata = self._accel()
+
+            hold = hold + ((gdata["z"] - GYRO_OFFSETS[2]) * dt)
+
+            forceMag = abs(adata[0]) + abs(adata[1]) + abs(adata[2])
+            if forceMag > 8192 and forceMag < 32768:
+                zaccelturn = atan2((adata[0] - ACCEL_OFFSETS[0]), (adata[1] - ACCEL_OFFSETS[1])) * (180 / pi)
+                hold = hold * 0.98 + zaccelturn * 0.02
+            else:
+                print("REJECTED " + str(forceMag))
+
+            q.put(hold)
 
             time.sleep(dt)
 
