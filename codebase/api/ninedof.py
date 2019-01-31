@@ -137,9 +137,9 @@ class NineDOF:
 
             hold = hold + ((gdata["z"] - GYRO_OFFSETS[2]) * dt)
 
-            forceMag = abs(adata[0]) + abs(adata[1]) + abs(adata[2])
+            forceMag = abs(adata["x"]) + abs(adata["y"]) + abs(adata["z"])
             if forceMag > 8192 and forceMag < 32768:
-                zaccelturn = atan2((adata[0] - ACCEL_OFFSETS[0]), (adata[1] - ACCEL_OFFSETS[1])) * (180 / pi)
+                zaccelturn = atan2((adata["x"] - ACCEL_OFFSETS[0]), (adata["y"] - ACCEL_OFFSETS[1])) * (180 / pi)
                 hold = hold * 0.98 + zaccelturn * 0.02
             else:
                 print("REJECTED " + str(forceMag))
