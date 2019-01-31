@@ -116,12 +116,20 @@ class NineDOF:
     # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_gyro_heading(self, dt, q):
         global GYRO_OFFSETS
-        hold = 0
+        hold1 = 0
+        hold2 = 0
+        hold3 = 0
+
         while True:
             # This function needs to be run
             gdata = self._gyro()
-            hold = hold + ((gdata["z"] - GYRO_OFFSETS[2]) * dt)
-            q.put(hold)
+            hold1 = hold1 + ((gdata["x"] - GYRO_OFFSETS[0]) * dt)
+            hold2 = hold2 + ((gdata["y"] - GYRO_OFFSETS[1]) * dt)
+            hold3 = hold3 + ((gdata["z"] - GYRO_OFFSETS[2]) * dt)
+
+            q.put("X: " + hold1)
+            q.put("Y: " + hold2)
+            q.put("Z: " + hold3)
 
             time.sleep(dt)
 
