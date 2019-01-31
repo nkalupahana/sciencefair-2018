@@ -127,9 +127,9 @@ class NineDOF:
             hold2 = hold2 + ((gdata["y"] - GYRO_OFFSETS[1]) * dt)
             hold3 = hold3 + ((gdata["z"] - GYRO_OFFSETS[2]) * dt)
 
-            q.put("X: " + hold1)
-            q.put("Y: " + hold2)
-            q.put("Z: " + hold3)
+            q.put("X: " + str(hold1))
+            q.put("Y: " + str(hold2))
+            q.put("Z: " + str(hold3))
 
             time.sleep(dt)
 
