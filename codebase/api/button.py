@@ -8,7 +8,7 @@ class ButtonActionThread:
         self.runner = runner
         self.pin = pin
         self.pitch = pitch
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(pin, GPIO.IN)
 
     def activate(self):
