@@ -18,6 +18,7 @@ position = Positioning()
 def saveState():
     print("SAVING")
     pos = position.getLatLng()
+    print(pos)
     db.put(pos["lat"], pos["lng"])
 
 # Create button, activate
