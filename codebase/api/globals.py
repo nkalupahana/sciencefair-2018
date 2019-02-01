@@ -1,4 +1,4 @@
-BUTTON_PIN = 11
+BUTTON_PIN = 17
 GRAPH_PATH = "../files/main.graph"
 IOU_LIMIT = 0.20
 DETECTION_LIMIT = 0.20

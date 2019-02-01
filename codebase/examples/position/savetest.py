@@ -13,6 +13,7 @@ position = Positioning()
 
 # Create function to save state
 def saveState():
+    print("SAVING...")
     pos = position.getLatLng()
     db.put(pos.lat, pos.lng)
 
