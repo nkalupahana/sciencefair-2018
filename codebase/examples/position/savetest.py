@@ -7,6 +7,7 @@ sys.path.append("../../api")
 from api.globals import *
 from api.positioning import *
 from api.database import *
+from api.button import *
 
 # Create database & GPS objects
 db = Database(DATABASE_NAME)
