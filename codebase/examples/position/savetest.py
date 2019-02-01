@@ -1,6 +1,8 @@
 # Add API
 import sys
 sys.path.append("../../")
+sys.path.append("../../api")
+
 
 from api.globals import *
 from api.positioning import *
