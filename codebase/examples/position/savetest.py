@@ -18,7 +18,7 @@ position = Positioning()
 def saveState():
     print("SAVING")
     pos = position.getLatLng()
-    db.put(pos.lat, pos.lng)
+    db.put(pos["lat"], pos["lng"])
 
 # Create button, activate
 button = ButtonActionThread(BUTTON_PIN, saveState, CONFIRM_PITCH) # TODO: check pitch
