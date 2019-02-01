@@ -12,7 +12,7 @@ class Positioning:
 
     def getLatLng(self):
         self._pull()
-        return {lat: self.glock.fix.latitude, lng: self.glock.fix.longitude}
+        return {"lat": self.glock.fix.latitude, "lng": self.glock.fix.longitude}
 
     def getAltitude(self):
         self._pull()
