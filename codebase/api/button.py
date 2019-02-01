@@ -26,7 +26,7 @@ class ButtonActionThread:
     def checkPin(self):
         while True:
             if GPIO.input(self.pin):
-                self.playTone()
+                #self.playTone()
                 self.runner()
                 while GPIO.input(self.pin):
                     sleep(0.1)
