@@ -1,13 +1,18 @@
 # See http://www.danmandle.com/blog/getting-gpsd-to-work-with-python/
 
 from gps import *
+from time import sleep
 
 class Positioning:
     def __init__(self):
         self.glock = gps(mode=WATCH_ENABLE) # starts info stream
 
     def _pull(self):
-        self.glock.next()
+        while (self.glock.fix.latitude == 0) {
+            self.glock.next()
+            sleep(0.25)
+        }
+        
         return
 
     def getLatLng(self):
