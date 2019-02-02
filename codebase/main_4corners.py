@@ -4,17 +4,20 @@ from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
 from time import sleep
 import atexit, sys, multiprocessing
 sys.path.append("../../")
+sys.path.append("../../api")
 from api import *
+from Adafruit_MotorHAT import *
 
-atexit.register(turnOffMotors)
+atexit.register(motors.turnOffMotors)
 
 # system component initialization
-drive = GyroDrive(BASE_MOTOR_1, BASE_MOTOR_2)
-cutter = Cutter(drive.getHAT().getMotor(CUTTER_MOTOR))
-camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
-positioning = Positioning()
+#drive = GyroDrive(BASE_MOTOR_1, BASE_MOTOR_2)
+#cutter = Cutter(drive.getHAT().getMotor(CUTTER_MOTOR))
+#camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
+mh = Adafruit_MotorHAT(addr=0x60)
+ds = motors.DriveSystem(mh.getMotor(m1), mh.getMotor(m2))positioning = positioning.Positioning()
 startloc = positioning.getLatLng()
-bounds = Boundary(DATABASE_NAME)
+bounds = boundary.Boundary(globals.DATABASE_NAME)
 
 # Start main driver system thread
 dt = multiprocessing.Process(target=_driver)
@@ -22,7 +25,8 @@ dt.daemon = True
 dt.start()
 
 def _driver():
-    drive.straight_drive_start(100)
+    #drive.straight_drive_start(100)
+
 
     while not bounds.converged(positioning.getLatLng, startloc):
         if bounds.on_boundary():
