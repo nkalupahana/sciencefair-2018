@@ -27,7 +27,10 @@ def _driver():
     while not bounds.converged(positioning.getLatLng, startloc):
         if bounds.on_boundary():
             drive.straight_drive_terminate()
-            drive.turn_sequence()
+            print("DONE")
+            #drive.turn_sequence()
+
+        """
 
         ymin = camera.run()
         if (camera.run() != 0):
@@ -39,3 +42,4 @@ def _driver():
             drive.getDriveSystem().go(100)
 
         drive.getDriveSystem().stop()
+        """

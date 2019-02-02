@@ -17,6 +17,7 @@ class Boundary:
             self.lines.yint.append(points[index - 1][2])
 
     def on_boundary(self, loc):
+        print("--------")
         for line in self.lines:
             # If in x range:
             if 0 <= ((loc.lat - line.xint) / line.xslope) <= 1:
@@ -25,6 +26,10 @@ class Boundary:
                     # If at point on line:
                     if ((loc.lat - line.xint) / line.xslope) == ((loc.lng - line.yint) / line.yslope):
                         return True
+
+            print(((loc.lat - line.xint) / line.xslope))
+            print(((loc.lng - line.yint) / line.yslope))
+            print(((loc.lat - line.xint) / line.xslope) == ((loc.lng - line.yint) / line.yslope))
 
         return False
 
