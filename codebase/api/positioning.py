@@ -3,25 +3,32 @@
 from gps import *
 from time import sleep
 import copy
+import threading
+
+class GpsPoller(threading.Thread):
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
+
+    def run(self):
+        self.gpsd.next()
+        sleep(0.5)
 
 class Positioning:
     def __init__(self):
-        self.glock = gps(mode=WATCH_ENABLE) # starts info stream
-        self.data = {}
-
-    def _pull(self):
-        self.data = self.glock.next()
+        self.gpsthread = GpsPoller()
+        self.gpsthread.start()
         return
 
     def getLatLng(self):
         self._pull()
         print("okay")
-        return {"lat": round(self.data.fix.latitude, 5), "lng": round(self.data.fix.longitude, 5)}
+        return {"lat": round(self.gpsthread.gpsd.fix.latitude, 5), "lng": round(self.gpsthread.gpsd.fix.longitude, 5)}
 
     def getAltitude(self):
         self._pull()
-        return self.data.fix.altitude
+        return self.gpsthread.gpsd.fix.altitude
 
     def getGPSGroundSpeed(self):
         self._pull()
-        return self.data.fix.speed
+        return self.gpsthread.gpsd.fix.speed
