@@ -4,6 +4,7 @@ from gps import *
 from time import sleep
 import copy
 import threading
+import multiprocessing
 
 class Positioning:
     def __init__(self, q):
