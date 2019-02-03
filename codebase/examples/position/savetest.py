@@ -23,7 +23,6 @@ def saveState():
             q.get(False)
         except Empty:
             continue
-        q.task_done()
 
     print("SAVING")
     pos = q.get()
