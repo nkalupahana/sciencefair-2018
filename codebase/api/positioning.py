@@ -18,7 +18,8 @@ class Positioning:
 
         while self.glock.fix.track == track:
             print("SAME")
-            sleep(0.25)
+            self.glock.next()
+            sleep(0.5)
 
         print("out")
 
