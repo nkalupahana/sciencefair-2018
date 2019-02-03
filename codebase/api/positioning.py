@@ -22,6 +22,7 @@ class Positioning:
             self.glock.next()
             sleep(0.5)
 
+        sleep(1)
         print(self.glock.fix.track)
         print("out")
 
