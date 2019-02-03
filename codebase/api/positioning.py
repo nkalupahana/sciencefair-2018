@@ -10,6 +10,9 @@ class GpsPoller(threading.Thread):
         threading.Thread.__init__(self)
         self.gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
 
+    def getFix(self):
+        return self.gpsd.fix
+
     def run(self):
         while True:
             self.gpsd.next()
@@ -22,12 +25,12 @@ class Positioning:
         return
 
     def getLatLng(self):
-        return {"lat": round(self.gpsthread.gpsd.fix.latitude, 5), "lng": round(self.gpsthread.gpsd.fix.longitude, 5)}
+        return {"lat": round(self.gpsthread.getFix().latitude, 5), "lng": round(self.gpsthread.getFix().longitude, 5)}
 
     def getAltitude(self):
         self._pull()
-        return self.gpsthread.gpsd.fix.altitude
+        return self.gpsthread.getFix().altitude
 
     def getGPSGroundSpeed(self):
         self._pull()
-        return self.gpsthread.gpsd.fix.speed
+        return self.gpsthread.getFix().speed
