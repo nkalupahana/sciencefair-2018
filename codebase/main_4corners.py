@@ -5,20 +5,23 @@ from time import sleep
 import atexit, sys, multiprocessing
 sys.path.append("../../")
 sys.path.append("../../api")
-from api import *
 from Adafruit_MotorHAT import *
 from multiprocessing import Queue
+from api.motors import *
+from api.positioning import *
+from api.boundary import *
+from api.globals import *
 
-atexit.register(motors.turnOffMotors)
+atexit.register(turnOffMotors)
 
 # system component initialization
 #drive = GyroDrive(BASE_MOTOR_1, BASE_MOTOR_2)
 #cutter = Cutter(drive.getHAT().getMotor(CUTTER_MOTOR))
 #camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
 mh = Adafruit_MotorHAT(addr=0x60)
-ds = motors.DriveSystem(mh.getMotor(m1), mh.getMotor(m2))
+ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
 q = Queue()
-positioning = positioning.Positioning(q)
+positioning = Positioning(q)
 sleep(5)
 while not q.empty():
     try:
@@ -27,7 +30,7 @@ while not q.empty():
         continue
 
 startloc = q.get()
-bounds = boundary.Boundary(globals.DATABASE_NAME)
+bounds = Boundary(DATABASE_NAME)
 print("START")
 print(startloc)
 

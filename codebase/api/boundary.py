@@ -5,16 +5,16 @@ class Boundary:
     def __init__(self, name):
         self.db = Database(name)
         points = self.db.getPoints()
-        if len(points) != 4:
-            raise ValueError("You need a database of 4 points!")
+#        if len(points) != 4:
+ #           raise ValueError("You need a database of 4 points!")
 
-        self.lines = {xslope: [], xint: [], yslope: [], yint: []}
+        self.lines = {"xslope": [], "xint": [], "yslope": [], "yint": []}
 
         for index, point in enumerate(points):
-            self.lines.xslope.append(point[1] - points[index - 1][1])
-            self.lines.yslope.append(point[2] - points[index - 1][2])
-            self.lines.xint.append(points[index - 1][1])
-            self.lines.yint.append(points[index - 1][2])
+            self.lines["xslope"].append(point[1] - points[index - 1][1])
+            self.lines["yslope"].append(point[2] - points[index - 1][2])
+            self.lines["xint"].append(points[index - 1][1])
+            self.lines["yint"].append(points[index - 1][2])
 
     def on_boundary(self, loc):
         print("--------")
