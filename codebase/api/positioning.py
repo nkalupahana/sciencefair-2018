@@ -12,6 +12,7 @@ class GpsPoller(threading.Thread):
 
     def run(self):
         self.gpsd.next()
+        print("get")
         sleep(0.5)
 
 class Positioning:
