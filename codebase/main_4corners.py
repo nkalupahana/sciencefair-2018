@@ -7,6 +7,7 @@ sys.path.append("../../")
 sys.path.append("../../api")
 from api import *
 from Adafruit_MotorHAT import *
+from multiprocessing import Queue
 
 atexit.register(motors.turnOffMotors)
 
@@ -16,7 +17,8 @@ atexit.register(motors.turnOffMotors)
 #camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
 mh = Adafruit_MotorHAT(addr=0x60)
 ds = motors.DriveSystem(mh.getMotor(m1), mh.getMotor(m2))
-positioning = positioning.Positioning()
+q = Queue()
+positioning = positioning.Positioning(q)
 startloc = positioning.getLatLng()
 bounds = boundary.Boundary(globals.DATABASE_NAME)
 
@@ -25,10 +27,15 @@ dt = multiprocessing.Process(target=_driver)
 dt.daemon = True
 dt.start()
 
+def getLatLng():
+    val = q.get()
+    print(val)
+    return val
+
 def _driver():
     ds.go(100)
 
-    while not bounds.converged(positioning.getLatLng, startloc):
+    while not bounds.converged(getLatLng, startloc):
         if bounds.on_boundary():
             print("DONE")
             ds.stop()
