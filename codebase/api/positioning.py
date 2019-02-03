@@ -7,13 +7,13 @@ import threading
 
 class Positioning:
     def __init__(self, q):
-        start_gps_thread(q)
+        self.start_gps_thread(q)
         return
 
     def start_gps_thread(self, q):
-        self.gyro_thread = multiprocessing.Process(target=self._thread_gps, args=(q, ))
-        self.gyro_thread.daemon = True
-        self.gyro_thread.start()
+        self.thrd = multiprocessing.Process(target=self._thread_gps, args=(q, ))
+        self.thrd.daemon = True
+        self.thrd.start()
 
     def _thread_gps(self, q):
         gpsd = gps(mode=WATCH_ENABLE)
