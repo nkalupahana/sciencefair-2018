@@ -5,36 +5,20 @@ from time import sleep
 import copy
 import threading
 
-gpsd = None
+class Positioning:
+    def __init__(self, q):
+        start_gps_thread(q)
+        return
 
-class GpsPoller(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        global gpsd
-        gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
+    def start_gps_thread(self, q):
+        self.gyro_thread = multiprocessing.Process(target=self._thread_gps, args=(q, ))
+        self.gyro_thread.daemon = True
+        self.gyro_thread.start()
 
-    def run(self):
-        global gpsd
+    def _thread_gps(self, q):
+        gpsd = gps(mode=WATCH_ENABLE)
 
         while True:
             gpsd.next()
-            print(gpsd.fix.latitude)
-            sleep(0.5)
-
-class Positioning:
-    def __init__(self):
-        self.gpsthread = GpsPoller()
-        self.gpsthread.start()
-        return
-
-    def getLatLng(self):
-        global gpsd
-        return {"lat": round(gpsd.fix.latitude, 5), "lng": round(gpsd.fix.longitude, 5)}
-
-    def getAltitude(self):
-        global gpsd
-        return gpsd.fix.altidude
-
-    def getGPSGroundSpeed(self):
-        global gpsd
-        return gpsd.fix.speed
+            sleep(1)
+            q.put({"lat": gpsd.fix.latitude, "lng": gpsd.fix.latitude})
