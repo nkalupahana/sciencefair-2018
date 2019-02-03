@@ -9,11 +9,10 @@ class Positioning:
         self.glock = gps(mode=WATCH_ENABLE) # starts info stream
 
     def _pull(self):
-        self.glock.fix.latitude = 0.0
-        self.glock.fix.longitude = 0.0
+        self.glock.fix = None
         self.glock.next()
 
-        while self.glock.fix.latitude == 0.0:
+        while self.glock.fix.latitude == 0.0 or self.glock.fix == None:
             print("waiting")
             self.glock.next()
             sleep(0.25)
