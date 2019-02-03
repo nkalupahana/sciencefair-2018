@@ -9,10 +9,10 @@ class Positioning:
         self.glock = gps(mode=WATCH_ENABLE) # starts info stream
 
     def _pull(self):
-        self.glock.fix = None
+        self.glock.fix = {}
         self.glock.next()
 
-        while self.glock.fix == None:
+        while self.glock.fix == {}}:
             print("waiting")
             self.glock.next()
             sleep(0.25)
