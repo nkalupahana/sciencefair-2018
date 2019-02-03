@@ -15,7 +15,8 @@ atexit.register(motors.turnOffMotors)
 #cutter = Cutter(drive.getHAT().getMotor(CUTTER_MOTOR))
 #camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
 mh = Adafruit_MotorHAT(addr=0x60)
-ds = motors.DriveSystem(mh.getMotor(m1), mh.getMotor(m2))positioning = positioning.Positioning()
+ds = motors.DriveSystem(mh.getMotor(m1), mh.getMotor(m2))
+positioning = positioning.Positioning()
 startloc = positioning.getLatLng()
 bounds = boundary.Boundary(globals.DATABASE_NAME)
 
@@ -25,13 +26,13 @@ dt.daemon = True
 dt.start()
 
 def _driver():
-    #drive.straight_drive_start(100)
-
+    ds.go(100)
 
     while not bounds.converged(positioning.getLatLng, startloc):
         if bounds.on_boundary():
-            drive.straight_drive_terminate()
             print("DONE")
+            ds.stop()
+            #drive.straight_drive_terminate()
             #drive.turn_sequence()
 
         """
