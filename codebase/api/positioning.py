@@ -21,8 +21,6 @@ class Positioning:
         return
 
     def getLatLng(self):
-        self._pull()
-        print("okay")
         return {"lat": round(self.gpsthread.gpsd.fix.latitude, 5), "lng": round(self.gpsthread.gpsd.fix.longitude, 5)}
 
     def getAltitude(self):
