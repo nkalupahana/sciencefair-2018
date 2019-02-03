@@ -7,39 +7,21 @@ import copy
 class Positioning:
     def __init__(self):
         self.glock = gps(mode=WATCH_ENABLE) # starts info stream
+        self.data = {}
 
     def _pull(self):
-        self.glock.fix = {}
-        self.glock.next()
-
-        while self.glock.fix == {}:
-            print("waiting")
-            self.glock.next()
-            sleep(0.25)
-
-        while self.glock.fix.latitude == 0.0:
-            print("waiting")
-            self.glock.next()
-            sleep(0.25)
-
-        while self.glock.fix.longitude == 0.0:
-            self.glock.next()
-            sleep(0.25)
-
-        sleep(1)
-        print("out")
-
+        self.data = self.glock.next()
         return
 
     def getLatLng(self):
         self._pull()
         print("okay")
-        return {"lat": round(self.glock.fix.latitude, 5), "lng": round(self.glock.fix.longitude, 5)}
+        return {"lat": round(self.data.fix.latitude, 5), "lng": round(self.data.fix.longitude, 5)}
 
     def getAltitude(self):
         self._pull()
-        return self.glock.fix.altitude
+        return self.data.fix.altitude
 
     def getGPSGroundSpeed(self):
         self._pull()
-        return self.glock.fix.speed
+        return self.data.fix.speed
