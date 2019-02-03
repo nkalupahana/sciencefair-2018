@@ -12,7 +12,7 @@ class Positioning:
         self.glock.fix = {}
         self.glock.next()
 
-        while self.glock.fix == {}}:
+        while self.glock.fix == {}:
             print("waiting")
             self.glock.next()
             sleep(0.25)
