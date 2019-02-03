@@ -7,5 +7,7 @@ from multiprocessing import Queue
 from api.positioning import *
 
 q = Queue()
+position = Positioning(q)
+
 while True:
     print(q.get())
