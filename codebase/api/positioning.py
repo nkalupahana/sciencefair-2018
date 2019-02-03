@@ -17,12 +17,16 @@ class Positioning:
             sleep(0.25)
 
         while self.glock.fix.track == track:
+            print("SAME")
             sleep(0.25)
+
+        print("out")
 
         return
 
     def getLatLng(self):
         self._pull()
+        print("okay")
         return {"lat": round(self.glock.fix.latitude, 5), "lng": round(self.glock.fix.longitude, 5)}
 
     def getAltitude(self):
