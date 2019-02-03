@@ -19,8 +19,17 @@ mh = Adafruit_MotorHAT(addr=0x60)
 ds = motors.DriveSystem(mh.getMotor(m1), mh.getMotor(m2))
 q = Queue()
 positioning = positioning.Positioning(q)
-startloc = positioning.getLatLng()
+sleep(5)
+while not q.empty():
+    try:
+        q.get(False)
+    except Empty:
+        continue
+
+startloc = q.get()
 bounds = boundary.Boundary(globals.DATABASE_NAME)
+print("START")
+print(startloc)
 
 # Start main driver system thread
 dt = multiprocessing.Process(target=_driver)
