@@ -12,7 +12,12 @@ class Positioning:
         self.glock.fix = None
         self.glock.next()
 
-        while self.glock.fix.latitude == 0.0 or self.glock.fix == None:
+        while self.glock.fix == None:
+            print("waiting")
+            self.glock.next()
+            sleep(0.25)
+
+        while self.glock.fix.latitude == 0.0:
             print("waiting")
             self.glock.next()
             sleep(0.25)
