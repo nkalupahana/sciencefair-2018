@@ -18,8 +18,12 @@ position = Positioning(q)
 
 # Create function to save state
 def saveState():
-    with q.mutex:
-        q.queue.clear()
+    while not q.empty():
+        try:
+            q.get(False)
+        except Empty:
+            continue
+        q.task_done()
 
     print("SAVING")
     pos = q.get()
