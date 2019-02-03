@@ -2,13 +2,14 @@
 
 from gps import *
 from time import sleep
+import copy
 
 class Positioning:
     def __init__(self):
         self.glock = gps(mode=WATCH_ENABLE) # starts info stream
 
     def _pull(self):
-        track = self.glock.fix.track
+        track = copy.deepcopy(self.glock.fix.track)
         print(track)
         self.glock.next()
 
