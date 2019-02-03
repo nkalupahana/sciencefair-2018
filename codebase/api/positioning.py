@@ -11,9 +11,9 @@ class GpsPoller(threading.Thread):
         self.gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
 
     def run(self):
-        self.gpsd.next()
-        print("get")
-        sleep(0.5)
+        while True:
+            self.gpsd.next()
+            sleep(0.5)
 
 class Positioning:
     def __init__(self):
