@@ -23,8 +23,7 @@ ds.go(100)
 while True:
     ymin = camera.run()
     if (ymin != 0):
-        print(ymin)
-        sleep(ymin / 40)
+        sleep(ymin + 2)
         ds.go(50)
         cutter.cut()
         ds.go(-10) # Wait for further camera input

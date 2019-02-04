@@ -168,6 +168,9 @@ class Camera:
             if ymin < gymin:
                 gymin = ymin
 
+        if gymin < 0:
+            gymin = 0
+
         return (0 if (len(results) == 0) else gymin)
 
     def __init__(self, _gp, _dt, _iou, _lab):
