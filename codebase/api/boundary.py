@@ -31,7 +31,7 @@ class Boundary:
 
             print("Latitude in range : " + str(loc["lat"] >= self.points[backindex][1] and loc["lat"] <= self.points[index][1]))
             print("Longitude in range : " + str(loc["lng"] >= self.points[backindex][2] and loc["lng"] <= self.points[index][2]))
-            print("At point on line : " + str((((loc["lat"] - self.points[backindex][1]) / (self.points[index][1] - self.points[backindex][1])) - ((loc["lng"] - self.points[backindex][2]) / (self.points[index][2] - self.points[backindex][2]))) < 0.1))
+            print("At point on line : " + str((((loc["lat"] - self.points[backindex][1]) / (self.points[index][1] - self.points[backindex][1])) - ((loc["lng"] - self.points[backindex][2]) / (self.points[index][2] - self.points[backindex][2])))))
 
         return False
 
