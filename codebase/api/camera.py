@@ -153,7 +153,7 @@ class Camera:
 
             avg = (box_xmin + box_xmax) / 2
 
-            if avg < 0.35 or avg > 0.65:
+            if avg < 0.15 or avg > 0.85:
                 print("Result removed at avg x: " + str(avg))
                 del results[j]
 

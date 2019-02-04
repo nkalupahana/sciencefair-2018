@@ -1,7 +1,7 @@
 BUTTON_PIN = 17
 GRAPH_PATH = "/root/sciencefair-2018/codebase/main.graph"
-IOU_LIMIT = 0.20
-DETECTION_LIMIT = 0.20
+IOU_LIMIT = 0.15
+DETECTION_LIMIT = 0.15
 LABELS = {0: "bg", 1: "dandelion"}
 BASE_MOTOR_1 = 1
 BASE_MOTOR_2 = 2
