@@ -2,7 +2,7 @@
 from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
 
 from time import sleep
-import atexit, sys, multiprocessing
+import atexit, sys
 sys.path.append("../../")
 sys.path.append("../../api")
 from Adafruit_MotorHAT import *
@@ -39,37 +39,28 @@ def getLatLng():
     print(val)
     return val
 
-def _driver():
-    ds.go(100)
+ds.go(100)
 
-    while not bounds.converged(getLatLng()):
-        loc = getLatLng()
-        if bounds.on_boundary(getLatLng(), startloc):
-            print("DONE")
-            ds.stop()
-            #drive.straight_drive_terminate()
-            #drive.turn_sequence()
+while not bounds.converged(getLatLng()):
+    loc = getLatLng()
+    if bounds.on_boundary(getLatLng(), startloc):
+        print("DONE")
+        ds.stop()
+        #drive.straight_drive_terminate()
+        #drive.turn_sequence()
 
-    print("AT END??")
+print("AT END??")
 
-    """
+"""
 
-    ymin = camera.run()
-    if (camera.run() != 0):
-        sleep(ymin / 40)
-        drive.getDriveSystem().go(50)
-        cutter.cut()
-        drive.getDriveSystem().go(-10) # Wait for further camera input
-    else:
-        drive.getDriveSystem().go(100)
+ymin = camera.run()
+if (camera.run() != 0):
+    sleep(ymin / 40)
+    drive.getDriveSystem().go(50)
+    cutter.cut()
+    drive.getDriveSystem().go(-10) # Wait for further camera input
+else:
+    drive.getDriveSystem().go(100)
 
-    drive.getDriveSystem().stop()
-    """
-
-# Start main driver system thread
-dt = multiprocessing.Process(target=_driver)
-dt.daemon = True
-dt.start()
-
-while True:
-    sleep(1)
+drive.getDriveSystem().stop()
+"""
