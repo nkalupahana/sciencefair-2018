@@ -19,8 +19,8 @@ class Camera:
 
     def calculate_iou(self, box, truth):
         # calculate the iou intersection over union by first calculating the overlapping height and width
-        width_overlap = calculate_overlap(box[0], box[2], truth[0], truth[2])
-        height_overlap = calculate_overlap(box[1], box[3], truth[1], truth[3])
+        width_overlap = self.calculate_overlap(box[0], box[2], truth[0], truth[2])
+        height_overlap = self.calculate_overlap(box[1], box[3], truth[1], truth[3])
         # no overlap
         if width_overlap < 0 or height_overlap < 0:
             return 0
@@ -45,7 +45,7 @@ class Camera:
                 if next_object in high_iou_objs:
                     continue
                 box = sorted_boxes[next_object]
-                iou = calculate_iou(box, truth)
+                iou = self.calculate_iou(box, truth)
                 if iou >= self.IOU_THRESHOLD:
                     high_iou_objs[next_object] = 1
 
@@ -94,8 +94,8 @@ class Camera:
                     class_list = list()
                     current_score_total = 0
                     # calculate the coordinates for the current anchor box
-                    box_x = (col + sigmoid(reordered_results[row * 13 + col][anchor_box_num][0])) / 13.0
-                    box_y = (row + sigmoid(reordered_results[row * 13 + col][anchor_box_num][1])) / 13.0
+                    box_x = (col + self.sigmoid(reordered_results[row * 13 + col][anchor_box_num][0])) / 13.0
+                    box_y = (row + self.sigmoid(reordered_results[row * 13 + col][anchor_box_num][1])) / 13.0
                     box_w = (np.exp(reordered_results[row * 13 + col][anchor_box_num][2]) *
                              anchor_boxes[2 * anchor_box_num]) / 13.0
                     box_h = (np.exp(reordered_results[row * 13 + col][anchor_box_num][3]) *
@@ -115,7 +115,7 @@ class Camera:
                         class_list[current_class] = class_list[current_class] * 1.0 / current_score_total
 
                     # probability that the current anchor box contains an item
-                    object_confidence = sigmoid(reordered_results[row * 13 + col][anchor_box_num][4])
+                    object_confidence = self.sigmoid(reordered_results[row * 13 + col][anchor_box_num][4])
                     # highest class score detected for the object in the current anchor box
                     highest_class_score = max(class_list)
                     # index of the class with the highest score
@@ -137,7 +137,7 @@ class Camera:
                         boxes.append(box)
 
         # gets rid of all duplicate boxes using non-maximal suppression
-        results = apply_nms(boxes)
+        results = self.apply_nms(boxes)
 
         print(results)
 
