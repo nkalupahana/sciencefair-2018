@@ -6,18 +6,18 @@ import threading
 import copy
 
 class Camera:
-    def sigmoid(x):
+    def sigmoid(self, x):
         return 1.0 / (1 + np.exp(x * -1.0))
 
 
-    def calculate_overlap(x1, w1, x2, w2):
+    def calculate_overlap(self, x1, w1, x2, w2):
         box1_coordinate = max(x1 - w1 / 2.0, x2 - w2 / 2.0)
         box2_coordinate = min(x1 + w1 / 2.0, x2 + w2 / 2.0)
         overlap = box2_coordinate - box1_coordinate
         return overlap
 
 
-    def calculate_iou(box, truth):
+    def calculate_iou(self, box, truth):
         # calculate the iou intersection over union by first calculating the overlapping height and width
         width_overlap = calculate_overlap(box[0], box[2], truth[0], truth[2])
         height_overlap = calculate_overlap(box[1], box[3], truth[1], truth[3])
@@ -31,7 +31,7 @@ class Camera:
         return iou
 
 
-    def apply_nms(boxes):
+    def apply_nms(self, boxes):
         # sort the boxes by score in descending order
         sorted_boxes = sorted(boxes, key=lambda d: d[7])[::-1]
         high_iou_objs = dict()
@@ -57,7 +57,7 @@ class Camera:
         return filtered_result
 
 
-    def post_processing(output, original_img):
+    def post_processing(self, output, original_img):
         num_classes = 1
         num_grids = 13
         num_anchor_boxes = 5
@@ -170,7 +170,7 @@ class Camera:
 
         return (0 if (len(results) == 0) else gymin)
 
-    def __init__(_gp, _dt, _iou, _lab):
+    def __init__(self, _gp, _dt, _iou, _lab):
         """
         GRAPH_PATH = "../files/main.graph"
         DETECTION_THRESHOLD = 0.20
