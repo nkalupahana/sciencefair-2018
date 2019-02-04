@@ -207,9 +207,7 @@ class Camera:
 
         self.cap = cv2.VideoCapture(0)
 
-    def run():
-        #while True:
-
+    def run(self):
         # read an image in bgr format
         ret, img = self.cap.read()
         original_img = img
