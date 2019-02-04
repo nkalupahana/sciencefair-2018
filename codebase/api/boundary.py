@@ -34,12 +34,12 @@ class Boundary:
                 # If in y range:
                 if 0 <= ((loc["lng"] - line["yint"]) / line["yslope"]) <= 1:
                     # If at point on line:
-                    if ((loc["lat"] - line["xint"]) / line["xslope"]) == ((loc["lng"] - line["yint"]) / line["yslope"]):
+                    if (((loc["lng"] - line["yint"]) / line["yslope"]) - ((loc["lat"] - line["xint"]) / line["xslope"])) < 0.01:
                         return True
 
             print("X v. Slope: " + str((loc.lat - line.xint) / line.xslope))
             print("Y v. Slope: " + str((loc.lng - line.yint) / line.yslope))
-            
+
         return False
 
     def converged(self, loc):
