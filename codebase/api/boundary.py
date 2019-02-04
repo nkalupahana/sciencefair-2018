@@ -48,7 +48,7 @@ class Boundary:
         return False
 
     def converged(self, loc):
-        line = lines[1]
+        line = self.lines[1]
 
         # If at right x end:
         if 0 == ((loc["lat"] - line["xint"]) / line["xslope"]):
