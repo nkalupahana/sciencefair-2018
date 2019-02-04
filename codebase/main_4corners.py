@@ -47,12 +47,14 @@ def getLatLng():
 def _driver():
     ds.go(100)
 
-    while not bounds.converged(getLatLng, startloc):
+    while not bounds.converged(getLatLng()):
         if bounds.on_boundary():
             print("DONE")
             ds.stop()
             #drive.straight_drive_terminate()
             #drive.turn_sequence()
+
+    print("AT END??")
 
         """
 
