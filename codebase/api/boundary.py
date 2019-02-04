@@ -26,7 +26,7 @@ class Boundary:
             self.lines["xint"].append(points[backindex][1])
             self.lines["yint"].append(points[backindex][2])
 
-    def on_boundary(self, loc):
+    def on_boundary(self, loc, startloc):
         print("--------")
         for line in self.lines:
             # If in x range:
@@ -35,7 +35,9 @@ class Boundary:
                 if 0 <= ((loc["lng"] - line["yint"]) / line["yslope"]) <= 1:
                     # If at point on line:
                     if (((loc["lng"] - line["yint"]) / line["yslope"]) - ((loc["lat"] - line["xint"]) / line["xslope"])) < 0.01:
-                        return True
+                        # If not at starting point
+                        if loc != startloc:
+                            return True
 
             print("X v. Slope: " + str((loc.lat - line.xint) / line.xslope))
             print("Y v. Slope: " + str((loc.lng - line.yint) / line.yslope))
