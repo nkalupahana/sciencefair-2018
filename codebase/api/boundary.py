@@ -6,13 +6,13 @@ class Boundary:
         self.db = Database(name)
         _points = self.db.getPoints()
 
-        self.lines = {"xslope": [], "xint": [], "yslope": [], "yint": []}
-
-        points = [];
+        self.points = [];
 
         for _index, point in enumerate(_points):
-            points.append(point)
+            self.points.append(point)
 
+    def on_boundary(self, loc, startloc):
+        print("--------")
         for index, point in enumerate(points):
             if index == 1:
                 continue
@@ -24,39 +24,29 @@ class Boundary:
             else:
                 backindex = index - 1
 
-            self.lines["xslope"].append(point[1] - points[backindex][1])
-            self.lines["yslope"].append(point[2] - points[backindex][2])
-            self.lines["xint"].append(points[backindex][1])
-            self.lines["yint"].append(points[backindex][2])
+            if loc["lat"] => points[backindex][1] and loc["lat"] <= points[index][1]:
+                if loc["lng"] => points[backindex][2] and loc["lng"] <= points[index][2]:
+                    if (((loc["lat"] - points[backindex][1]) / (points[index][1] - points[backindex][1])) - ((loc["lng"] - points[backindex][2]) / (points[index][2] - points[backindex][2]))) < 0.1:
+                        return True
 
-        print(self.lines)
-
-    def on_boundary(self, loc, startloc):
-        print("--------")
-        for i, _f in enumerate(self.lines["xint"]):
-            # If in x range:
-            if 0 <= ((loc["lat"] - self.lines["xint"][i]) / self.lines["xslope"][i]) <= 1:
-                # If in y range:
-                if 0 <= ((loc["lng"] - self.lines["yint"][i]) / self.lines["yslope"][i]) <= 1:
-                    # If at point on line:
-                    if abs(((loc["lng"] - self.lines["yint"][i]) / self.lines["yslope"][i]) - ((loc["lat"] - self.lines["xint"][i]) / self.lines["xslope"][i])) < 0.01:
-                        # If not at starting point
-                        if loc != startloc:
-                            return True
-
-            print("Line " + str(i))
-            print("X v. Slope: " + str((loc["lat"] - self.lines["xint"][i]) / self.lines["xslope"][i]))
-            print("Y v. Slope: " + str((loc["lng"] - self.lines["yint"][i]) / self.lines["yslope"][i]))
+            print("Latitude in range : " + str(loc["lat"] => points[backindex][1] and loc["lat"] <= points[index][1]))
+            print("Longitude in range : " + str(loc["lng"] => points[backindex][2] and loc["lng"] <= points[index][2]))
+            print("At point on line : " + str((((loc["lat"] - points[backindex][1]) / (points[index][1] - points[backindex][1])) - ((loc["lng"] - points[backindex][2]) / (points[index][2] - points[backindex][2]))) < 0.1))
 
         return False
 
     def converged(self, loc):
-        i = 1
+
+        """
+        TODO
+        i = 2
 
         # If at right x end:
-        if -0.01 < ((loc["lat"] - self.lines["xint"][i]) / self.lines["xslope"][i]) < 0.01:
+        if -0.01 < (loc["lat"] - self.points[2][i]) / self.lines["xslope"][i]) < 0.01:
             # If at right y end:
             if -0.01 < ((loc["lng"] - self.lines["yint"][i]) / self.lines["yslope"][i]) < 0.01:
                 return True
+
+        """
 
         return False
