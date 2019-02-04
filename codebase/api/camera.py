@@ -203,7 +203,7 @@ class Camera:
         self.graph = mvnc.Graph(self.GRAPH_PATH)
 
         # create the input and output fifos
-        self.fifo_in, self.fifo_out = graph.allocate_with_fifos(device, graph_in_memory)
+        self.fifo_in, self.fifo_out = self.graph.allocate_with_fifos(device, graph_in_memory)
 
         self.cap = cv2.VideoCapture(0)
 
