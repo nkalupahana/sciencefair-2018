@@ -17,6 +17,7 @@ class Database:
     def put(self, lat, lng):
         self.dbc.execute("INSERT INTO points values(" + str(lat) + ", " + str(lng) + ")")
         self.db.commit()
+        print("Commited!")
         return
 
     def getPoints(self):
