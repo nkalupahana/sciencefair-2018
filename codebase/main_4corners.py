@@ -34,11 +34,6 @@ bounds = Boundary(DATABASE_NAME)
 print("START")
 print(startloc)
 
-# Start main driver system thread
-dt = multiprocessing.Process(target=_driver)
-dt.daemon = True
-dt.start()
-
 def getLatLng():
     val = q.get()
     print(val)
@@ -70,3 +65,8 @@ def _driver():
 
     drive.getDriveSystem().stop()
     """
+
+# Start main driver system thread
+dt = multiprocessing.Process(target=_driver)
+dt.daemon = True
+dt.start()
