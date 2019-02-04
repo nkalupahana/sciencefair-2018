@@ -20,7 +20,7 @@ class Boundary:
             backindex = -10
 
             if index == 0:
-                backindex = 0
+                backindex = 3
             else:
                 backindex = index - 1
 
