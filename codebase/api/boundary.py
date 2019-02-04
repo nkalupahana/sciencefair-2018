@@ -44,6 +44,7 @@ class Boundary:
                         if loc != startloc:
                             return True
 
+            print("Line " + str(i))
             print("X v. Slope: " + str((loc["lat"] - self.lines["xint"][i]) / self.lines["xslope"][i]))
             print("Y v. Slope: " + str((loc["lng"] - self.lines["yint"][i]) / self.lines["yslope"][i]))
 
