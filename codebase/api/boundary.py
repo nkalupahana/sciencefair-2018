@@ -4,9 +4,14 @@ from database import *
 class Boundary:
     def __init__(self, name):
         self.db = Database(name)
-        points = self.db.getPoints()
+        _points = self.db.getPoints()
 
         self.lines = {"xslope": [], "xint": [], "yslope": [], "yint": []}
+
+        points = [];
+
+        for _index, point in enumerate(_points):
+            points.append(point)
 
         for _index, point in enumerate(points):
             if _index == 1:
