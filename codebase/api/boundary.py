@@ -29,6 +29,8 @@ class Boundary:
             self.lines["xint"].append(points[backindex][1])
             self.lines["yint"].append(points[backindex][2])
 
+        print(self.lines)
+
     def on_boundary(self, loc, startloc):
         print("--------")
         for i, _f in enumerate(self.lines["xint"]):
