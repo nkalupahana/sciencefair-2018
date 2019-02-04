@@ -13,13 +13,13 @@ class Boundary:
         for _index, point in enumerate(_points):
             points.append(point)
 
-        for _index, point in enumerate(points):
-            if _index == 1:
+        for index, point in enumerate(points):
+            if index == 1:
                 continue
 
             backindex = -10
 
-            if _index == 0:
+            if index == 0:
                 backindex = 0
             else:
                 backindex = index - 1
