@@ -57,16 +57,16 @@ def _driver():
 
     print("AT END??")
 
-        """
+    """
 
-        ymin = camera.run()
-        if (camera.run() != 0):
-            sleep(ymin / 40)
-            drive.getDriveSystem().go(50)
-            cutter.cut()
-            drive.getDriveSystem().go(-10) # Wait for further camera input
-        else:
-            drive.getDriveSystem().go(100)
+    ymin = camera.run()
+    if (camera.run() != 0):
+        sleep(ymin / 40)
+        drive.getDriveSystem().go(50)
+        cutter.cut()
+        drive.getDriveSystem().go(-10) # Wait for further camera input
+    else:
+        drive.getDriveSystem().go(100)
 
-        drive.getDriveSystem().stop()
-        """
+    drive.getDriveSystem().stop()
+    """
