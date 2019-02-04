@@ -31,7 +31,7 @@ class Boundary:
 
     def on_boundary(self, loc, startloc):
         print("--------")
-        for i, _f in enumerate(self.lines.xint):
+        for i, _f in enumerate(self.lines["xint"]):
             # If in x range:
             if 0 <= ((loc["lat"] - self.lines["xint"][i]) / self.lines["xslope"][i]) <= 1:
                 # If in y range:
