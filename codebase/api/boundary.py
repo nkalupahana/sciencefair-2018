@@ -31,13 +31,13 @@ class Boundary:
 
     def on_boundary(self, loc, startloc):
         print("--------")
-        for line in self.lines:
+        for i, _f in enumerate(self.lines.xint):
             # If in x range:
-            if 0 <= ((loc["lat"] - line["xint"]) / line["xslope"]) <= 1:
+            if 0 <= ((loc["lat"] - lines["xint"][i]) / lines["xslope"][i]) <= 1:
                 # If in y range:
-                if 0 <= ((loc["lng"] - line["yint"]) / line["yslope"]) <= 1:
+                if 0 <= ((loc["lng"] - lines["yint"][i]) / lines["yslope"][i]) <= 1:
                     # If at point on line:
-                    if (((loc["lng"] - line["yint"]) / line["yslope"]) - ((loc["lat"] - line["xint"]) / line["xslope"])) < 0.01:
+                    if abs(((loc["lng"] - lines["yint"][i]) / lines["yslope"][i]) - ((loc["lat"] - lines["xint"][i]) / lines["xslope"][i])) < 0.01:
                         # If not at starting point
                         if loc != startloc:
                             return True
@@ -48,12 +48,12 @@ class Boundary:
         return False
 
     def converged(self, loc):
-        line = self.lines[1]
+        i = 1
 
         # If at right x end:
-        if 0 == ((loc["lat"] - line["xint"]) / line["xslope"]):
+        if -0.01 < ((loc["lat"] - lines["xint"][i]) / lines["xslope"][i]) < 0.01:
             # If at right y end:
-            if 0 == ((loc["lng"] - line["yint"]) / line["yslope"]):
+            if -0.01 < ((loc["lng"] - lines["yint"][i]) / lines["yslope"][i]) < 0.01:
                 return True
 
         return False
