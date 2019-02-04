@@ -22,7 +22,8 @@ ds.go(100)
 
 while True:
     ymin = camera.run()
-    if (camera.run() != 0):
+    if (ymin != 0):
+        print(ymin)
         sleep(ymin / 40)
         ds.go(50)
         cutter.cut()
