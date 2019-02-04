@@ -13,7 +13,7 @@ class Boundary:
 
     def on_boundary(self, loc, startloc):
         print("--------")
-        for index, point in enumerate(points):
+        for index, point in enumerate(self.points):
             if index == 1:
                 continue
 
