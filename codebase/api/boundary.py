@@ -5,8 +5,6 @@ class Boundary:
     def __init__(self, name):
         self.db = Database(name)
         points = self.db.getPoints()
-        if len(points) != 4:
-            raise ValueError("You need a database of 4 points!")
 
         self.lines = {"xslope": [], "xint": [], "yslope": [], "yint": []}
 
