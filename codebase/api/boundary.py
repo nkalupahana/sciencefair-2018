@@ -1,6 +1,6 @@
 from database import *
 
-# currently only supports 4 points (rectangle), robot must start in bottom left corner
+# currently only supports 4 self.points (rectangle), robot must start in bottom left corner
 class Boundary:
     def __init__(self, name):
         self.db = Database(name)
@@ -24,14 +24,14 @@ class Boundary:
             else:
                 backindex = index - 1
 
-            if loc["lat"] >= points[backindex][1] and loc["lat"] <= points[index][1]:
-                if loc["lng"] >= points[backindex][2] and loc["lng"] <= points[index][2]:
-                    if (((loc["lat"] - points[backindex][1]) / (points[index][1] - points[backindex][1])) - ((loc["lng"] - points[backindex][2]) / (points[index][2] - points[backindex][2]))) < 0.1:
+            if loc["lat"] >= self.points[backindex][1] and loc["lat"] <= self.points[index][1]:
+                if loc["lng"] >= self.points[backindex][2] and loc["lng"] <= self.points[index][2]:
+                    if (((loc["lat"] - self.points[backindex][1]) / (self.points[index][1] - self.points[backindex][1])) - ((loc["lng"] - self.points[backindex][2]) / (self.points[index][2] - self.points[backindex][2]))) < 0.1:
                         return True
 
-            print("Latitude in range : " + str(loc["lat"] >= points[backindex][1] and loc["lat"] <= points[index][1]))
-            print("Longitude in range : " + str(loc["lng"] >= points[backindex][2] and loc["lng"] <= points[index][2]))
-            print("At point on line : " + str((((loc["lat"] - points[backindex][1]) / (points[index][1] - points[backindex][1])) - ((loc["lng"] - points[backindex][2]) / (points[index][2] - points[backindex][2]))) < 0.1))
+            print("Latitude in range : " + str(loc["lat"] >= self.points[backindex][1] and loc["lat"] <= self.points[index][1]))
+            print("Longitude in range : " + str(loc["lng"] >= self.points[backindex][2] and loc["lng"] <= self.points[index][2]))
+            print("At point on line : " + str((((loc["lat"] - self.points[backindex][1]) / (self.points[index][1] - self.points[backindex][1])) - ((loc["lng"] - self.points[backindex][2]) / (self.points[index][2] - self.points[backindex][2]))) < 0.1))
 
         return False
 
