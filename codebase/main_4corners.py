@@ -43,14 +43,12 @@ ds.go(100)
 
 while not bounds.converged(getLatLng()):
     loc = getLatLng()
-    if bounds.on_boundary(getLatLng(), startloc):
+    if bounds.on_boundary(getLatLng()):
         print("DONE")
         ds.stop()
         #drive.straight_drive_terminate()
         #drive.turn_sequence()
-
-print("AT END??")
-
+        
 """
 
 ymin = camera.run()

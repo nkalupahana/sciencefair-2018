@@ -39,18 +39,9 @@ class Boundary:
         return False
 
     def converged(self, loc):
-
-        """
-        TODO
-        i = 2
-
-        # If at right x end:
-        if -0.01 < (loc["lat"] - self.points[2][i]) / self.lines["xslope"][i]) < 0.01:
-            # If at right y end:
-            if -0.01 < ((loc["lng"] - self.lines["yint"][i]) / self.lines["yslope"][i]) < 0.01:
+        if (loc["lat"] - self.points[2][1]) < 0.001:
+            if if (loc["lng"] - self.points[2][2]) < 0.001:
                 return True
-
-        """
 
         return False
 
