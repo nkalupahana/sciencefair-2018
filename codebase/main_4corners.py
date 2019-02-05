@@ -16,10 +16,10 @@ atexit.register(turnOffMotors)
 
 # system component initialization
 #drive = GyroDrive(BASE_MOTOR_1, BASE_MOTOR_2)
-#cutter = Cutter(drive.getHAT().getMotor(CUTTER_MOTOR))
-#camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
+camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
 mh = Adafruit_MotorHAT(addr=0x60)
 ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
+cutter = Cutter(ds.getMotor(CUTTER_MOTOR))
 q = Queue()
 positioning = Positioning(q)
 sleep(5)
