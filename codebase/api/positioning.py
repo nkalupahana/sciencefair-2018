@@ -21,5 +21,5 @@ class Positioning:
 
         while True:
             gpsd.next()
-            sleep(1)
+            sleep(0.2)
             q.put({"lat": round(gpsd.fix.latitude, 4), "lng": round(gpsd.fix.longitude, 4)})

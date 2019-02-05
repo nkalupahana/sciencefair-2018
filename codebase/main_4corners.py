@@ -23,12 +23,16 @@ ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
 q = Queue()
 positioning = Positioning(q)
 sleep(5)
-while not q.empty():
-    try:
-        q.get(False)
-    except Empty:
-        continue
 
+def emptyQueue():
+    global q
+    while not q.empty():
+        try:
+            q.get(False)
+        except Empty:
+            continue
+
+emptyQueue()
 startloc = q.get()
 bounds = Boundary(DATABASE_NAME)
 print("START")
@@ -41,24 +45,27 @@ def getLatLng():
 
 ds.go(100)
 
-while not bounds.converged(getLatLng()):
+while True:
+    emptyQueue()
     loc = getLatLng()
-    if bounds.on_boundary(getLatLng()):
+    if bounds.converged(loc):
+        break
+
+    if bounds.on_boundary(loc, startloc):
         print("DONE")
         ds.stop()
         #drive.straight_drive_terminate()
         #drive.turn_sequence()
-        
-"""
 
-ymin = camera.run()
-if (camera.run() != 0):
-    sleep(ymin / 40)
-    drive.getDriveSystem().go(50)
-    cutter.cut()
-    drive.getDriveSystem().go(-10) # Wait for further camera input
-else:
-    drive.getDriveSystem().go(100)
 
-drive.getDriveSystem().stop()
-"""
+    ymin = camera.run()
+    if (ymin != 0):
+        sleep(ymin + 2)
+        ds.go(50)
+        cutter.cut()
+        ds.go(-10)
+    else:
+        ds.go(100)
+
+
+ds.stop()
