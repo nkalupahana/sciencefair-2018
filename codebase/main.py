@@ -17,9 +17,17 @@ while True:
             sleep(0.01)
 
         if (time() > start + 1):
-            print("RELEASE")
+            call(['./tonecreation', '70', '0.4'])
+            call(['./tonecreation', '70', '0.4'])
+            call(['./tonecreation', '70', '0.4'])
+            call(['./tonecreation', '70', '0.4'])
+            call(['rm', DATABASE_NAME])
+            call(['python', './main_addpoints.py'])
         else:
-            print("SHORT")
+            call(['./tonecreation', '70', '0.4'])
+            call(['./tonecreation', '70', '0.4'])
+            call(['python', './main_4corners.py'])
 
+        call(['./tonecreation', '77', '1'])
 
     sleep(0.1)

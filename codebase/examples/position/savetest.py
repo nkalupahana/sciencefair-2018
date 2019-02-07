@@ -16,6 +16,8 @@ db.prepare()
 q = Queue()
 position = Positioning(q)
 
+count = 0
+
 # Create function to save state
 def saveState():
     while not q.empty():
@@ -28,11 +30,12 @@ def saveState():
     pos = q.get()
     print(pos)
     db.put(pos["lat"], pos["lng"])
+    count += 1
 
 # Create button, activate
 button = ButtonActionThread(BUTTON_PIN, saveState, CONFIRM_PITCH) # TODO: check pitch
 button.activate()
 
 # stay alive
-while True:
+while count < 4:
     sleep(1)
