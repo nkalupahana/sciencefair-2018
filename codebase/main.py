@@ -12,17 +12,13 @@ while True:
         start = time()
 
         while GPIO.input(BUTTON_PIN):
-            if (time() > start + 1):
-                print("LONG")
-                while GPIO.input(BUTTON_PIN):
-                    sleep(0.01)
+            sleep(0.01)
 
-                print("RELEASE")
-            else:
-                print("SHORT")
-                while GPIO.input(BUTTON_PIN):
-                    sleep(0.01)
 
-                print("RELEASE")
+        if (time() > start + 1):
+            print("RELEASE")
+        else:
+            print("SHORT")
+
 
     sleep(0.1)
