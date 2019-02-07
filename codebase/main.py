@@ -8,13 +8,13 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN)
 
 while True:
-    if GPIO.input(self.pin):
+    if GPIO.input(BUTTON_PIN):
         start = time
 
-        while GPIO.input(self.pin):
+        while GPIO.input(BUTTON_PIN):
             if (time() > start + 1):
                 print("LONG")
-                while GPIO.input(self.pin):
+                while GPIO.input(BUTTON_PIN):
                     sleep(0.1)
 
                 print("RELEASE")
