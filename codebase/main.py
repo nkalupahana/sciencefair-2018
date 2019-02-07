@@ -18,8 +18,8 @@ while True:
                     sleep(0.1)
 
                 print("RELEASE")
-
-        print("SHORT")
-        print("RELEASE")
+            else:
+                print("SHORT")
+                print("RELEASE")
 
     sleep(0.1)
