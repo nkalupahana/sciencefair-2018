@@ -20,6 +20,9 @@ while True:
                 print("RELEASE")
             else:
                 print("SHORT")
+                while GPIO.input(BUTTON_PIN):
+                    sleep(0.1)
+                
                 print("RELEASE")
 
     sleep(0.1)
