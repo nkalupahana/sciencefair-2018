@@ -1,11 +1,13 @@
 import RPi.GPIO as GPIO
 from time import sleep, time
 import multiprocessing
-from subprocess import Popen
+from subprocess import call
 from api.globals import BUTTON_PIN
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN)
+
+call(['sh', './api/welcome.sh'])
 
 while True:
     if GPIO.input(BUTTON_PIN):
@@ -13,7 +15,6 @@ while True:
 
         while GPIO.input(BUTTON_PIN):
             sleep(0.01)
-
 
         if (time() > start + 1):
             print("RELEASE")
