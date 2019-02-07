@@ -9,7 +9,7 @@ GPIO.setup(BUTTON_PIN, GPIO.IN)
 
 while True:
     if GPIO.input(BUTTON_PIN):
-        start = time
+        start = time()
 
         while GPIO.input(BUTTON_PIN):
             if (time() > start + 1):
