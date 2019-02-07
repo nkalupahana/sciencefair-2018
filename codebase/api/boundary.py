@@ -24,8 +24,6 @@ class Boundary:
             else:
                 backindex = index - 1
 
-
-
             if loc["lat"] >= lower(self.points[backindex][1], self.points[index][1]) and loc["lat"] <= higher(self.points[backindex][1], self.points[index][1]):
                 if loc["lng"] >= lower(self.points[backindex][2], self.points[index][2]) and loc["lng"] <= higher(self.points[backindex][2], self.points[index][2]):
                     if abs(((loc["lat"] - self.points[backindex][1]) / (self.points[index][1] - self.points[backindex][1])) - ((loc["lng"] - self.points[backindex][2]) / (self.points[index][2] - self.points[backindex][2]))) < 0.1:
