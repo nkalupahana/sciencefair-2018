@@ -24,7 +24,7 @@ ds.go(0, True)
 while abs(q.get() - 55) > 0.1:
     error = q.get() - 55
     print("ERR: " + str(error))
-    ds.adjustSpeed(error * 20)
+    ds.adjustSpeed(error * -20)
     sleep(0.01)
 
 orient.ga_heading_terminate()

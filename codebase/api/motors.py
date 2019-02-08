@@ -31,7 +31,13 @@ class DriveSystem:
 
     def adjustSpeed(self, adj):
         self.m1.setSpeed(self.currentSpeed + adj)
-        self.m2.setSpeed(self.currentSpeed - adj)
+
+        if (self.currentSpeed - adj) >= 0:
+            m2.run(Adafruit_MotorHAT.FORWARD)
+            m2.setSpeed(self.currentSpeed - adj)
+        else:
+            m2.run(Adafruit_MotorHAT.BACKWARD)
+            m2.setSpeed(abs(self.currentSpeed - adj))
 
     def _setSpeed(self, speed):
         self.currentSpeed = speed
