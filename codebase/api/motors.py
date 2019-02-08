@@ -44,7 +44,7 @@ class DriveSystem:
             ' .stop() instead!')
 
         if speed:
-            if speed > 0:
+            if speed >= 0:
                 self.m1.run(Adafruit_MotorHAT.FORWARD)
                 self.m2.run(Adafruit_MotorHAT.FORWARD)
                 self._setSpeed(speed)
