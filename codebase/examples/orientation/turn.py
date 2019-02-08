@@ -7,6 +7,8 @@ from multiprocessing import Queue
 from api.ninedof import *
 import Adafruit_MotorHAT
 from api.motors import *
+import atexit
+atexit.register(turnOffMotors)
 
 orient = NineDOF()
 q = Queue()
@@ -21,6 +23,7 @@ ds.go(0, True)
 
 while abs(q.get() - 55) > 0.1:
     error = q.get() - 55
+    print("ERR: " + str(error))
     ds.adjustSpeed(error * 20)
     sleep(0.01)
 
