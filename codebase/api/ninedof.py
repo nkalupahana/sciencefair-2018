@@ -47,8 +47,6 @@ class NineDOF:
             if forceMag > 8192 and forceMag < 32768:
                 zaccelturn = atan2(adata["x"], adata["y"]) * (180 / pi)
                 hold = hold * 0.98 + zaccelturn * 0.02
-            else:
-                print("REJECTED " + str(forceMag))
 
             q.put(hold)
 
