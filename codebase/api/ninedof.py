@@ -1,7 +1,6 @@
 import time, board, busio, adafruit_lsm9ds1, multiprocessing
 from math import atan2, pi
 from statistics import mean
-from MadgwickFilter import *
 from datetime import datetime, timedelta
 from globals import MAG_OFFSETS, GYRO_OFFSETS, ACCEL_OFFSETS, MAG_MATRIX
 
