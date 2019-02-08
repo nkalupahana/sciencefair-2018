@@ -12,7 +12,7 @@ orient = NineDOF()
 q = Queue()
 
 orient.gyro_accel_zero()
-orient.gyro_heading_begin_tracking(0.01, q)
+orient.ga_heading_begin_tracking(0.01, q)
 
 mh = Adafruit_MotorHAT(addr=0x60)
 ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
@@ -24,5 +24,5 @@ while abs(q.get() - 55) > 0.1:
     ds.adjustSpeed(error * 20)
     sleep(0.01)
 
-orient.gyro_accel_heading_terminate()
+orient.ga_heading_terminate()
 ds.stop()
