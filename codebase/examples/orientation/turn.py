@@ -20,7 +20,7 @@ ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
 ds.go(0, True)
 
 while abs(q.get() - 55) > 0.1:
-    error = q.get() - angle
+    error = q.get() - 55
     ds.adjustSpeed(error * 20)
     sleep(0.01)
 
