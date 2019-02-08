@@ -22,88 +22,6 @@ class NineDOF:
         gyro_x, gyro_y, gyro_z = self.sensor.gyro
         return {"x": gyro_x, "y": gyro_y, "z": gyro_z}
 
-    def magnometer_heading(self,mx,my):
-        if mx == 0:
-            if my < 0:
-                return 90
-            else:
-                return 0
-
-        direction = atan2(my, mx) * (180 / pi)
-
-        while direction < 0:
-            direction += 360
-
-        while direction > 360:
-            direction -= 360
-
-        return direction
-
-    def filter_begin_tracking(self, dt, q):
-        filter = MadgwickFilter(dt)
-        self.gyro_thread = multiprocessing.Process(target=self._thread_filter_tracking, args=(dt, q, filter, ))
-        self.gyro_thread.daemon = True
-        self.gyro_thread.start()
-
-    def filter_terminate(self):
-        self.gyro_thread.terminate()
-        self.gyro_thread = None
-
-    def _thread_filter_tracking(self, dt, q, filter):
-        global MAG_OFFSETS
-        global GYRO_OFFSETS
-        global ACCEL_OFFSETS
-        global MAG_MATRIX
-
-        print(GYRO_OFFSETS[0])
-
-        while True:
-            gdata = self._gyro()
-            adata = self._accel()
-            mdata = self._mag()
-
-            mdata["x"] = mdata["x"] * 1000;
-            mdata["y"] = mdata["y"] * 1000;
-            mdata["z"] = mdata["z"] * 1000;
-
-
-            _mx = mdata["x"] - MAG_OFFSETS[0]
-            _my = mdata["y"] - MAG_OFFSETS[1]
-            _mz = mdata["z"] - MAG_OFFSETS[2]
-
-            mx = _mx * MAG_MATRIX[0][0] + _my * MAG_MATRIX[0][1] + _mz * MAG_MATRIX[0][2]
-            my = _mx * MAG_MATRIX[1][0] + _my * MAG_MATRIX[1][1] + _mz * MAG_MATRIX[1][2]
-            mz = _mx * MAG_MATRIX[2][0] + _my * MAG_MATRIX[2][1] + _mz * MAG_MATRIX[2][2]
-
-            print(self.magnometer_heading(mx,my))
-
-            """gx = gdata["x"] - GYRO_OFFSETS[0]
-            gy = gdata["y"] - GYRO_OFFSETS[1]
-            gz = gdata["z"] - GYRO_OFFSETS[2]
-
-            ax = adata["x"] - ACCEL_OFFSETS[0]
-            ay = adata["y"] - ACCEL_OFFSETS[1]
-            az = adata["z"] - ACCEL_OFFSETS[2]
-
-            filter.update(gx,gy,gz,ax,ay,az,mx,my,mz)
-
-            print("X:" + str(filter.get_roll()))
-            print("Y:" + str(filter.get_pitch()))
-            print("Z:" + str(filter.get_yaw()))"""
-
-            time.sleep(dt)
-
-    # Calibration and Test Functions below!
-
-    def gyro_heading_begin_tracking(self, dt, q):
-        self.gyro_thread = multiprocessing.Process(target=self._thread_gyro_heading, args=(dt, q, ))
-        self.gyro_thread.daemon = True
-        self.gyro_thread.start()
-
-    def gyro_heading_terminate(self):
-        self.gyro_thread.terminate()
-        self.gyro_thread = None
-
     def ga_heading_begin_tracking(self, dt, q):
         self.gyro_thread = multiprocessing.Process(target=self._thread_ga_heading, args=(dt, q, ))
         self.gyro_thread.daemon = True
@@ -114,28 +32,9 @@ class NineDOF:
         self.gyro_thread = None
 
     # This function needs to be run continually in a thread to function (it performs integration over time)
-    def _thread_gyro_heading(self, dt, q):
-        global GYRO_OFFSETS
-        hold1 = 0
-        hold2 = 0
-        hold3 = 0
-
-        while True:
-            # This function needs to be run
-            gdata = self._gyro()
-            hold1 = hold1 + ((gdata["x"] - GYRO_OFFSETS[0]) * dt)
-            hold2 = hold2 + ((gdata["y"] - GYRO_OFFSETS[1]) * dt)
-            hold3 = hold3 + ((gdata["z"] - GYRO_OFFSETS[2]) * dt)
-
-            q.put("X: " + str(hold1))
-            q.put("Y: " + str(hold2))
-            q.put("Z: " + str(hold3))
-
-            time.sleep(dt)
-
-    # This function needs to be run continually in a thread to function (it performs integration over time)
     def _thread_ga_heading(self, dt, q):
         global GYRO_OFFSETS
+        global ACCEL_OFFSETS
 
         hold = 0
         while True:
@@ -145,7 +44,7 @@ class NineDOF:
 
             hold = hold + ((gdata["z"] - GYRO_OFFSETS[2]) * dt)
 
-            forceMag = abs(adata["x"] * 1000) + abs(adata["y"] * 1000) + abs(adata["z"] * 1000)
+            forceMag = abs(adata["x"] - ACCEL_OFFSETS[0]) + abs(adata["y"] - ACCEL_OFFSETS[1]) + abs(adata["z"] - ACCEL_OFFSETS[2])
             if forceMag > 8192 and forceMag < 32768:
                 zaccelturn = atan2(adata["x"], adata["y"]) * (180 / pi)
                 hold = hold * 0.98 + zaccelturn * 0.02
