@@ -43,17 +43,14 @@ class DriveSystem:
             raise ValueError('You shouldn\'t be setting speed to 0! Call' +
             ' .stop() instead!')
 
-        if speed:
-            if speed >= 0:
-                self.m1.run(Adafruit_MotorHAT.FORWARD)
-                self.m2.run(Adafruit_MotorHAT.FORWARD)
-                self._setSpeed(speed)
-            else:
-                self.m1.run(Adafruit_MotorHAT.BACKWARD)
-                self.m2.run(Adafruit_MotorHAT.BACKWARD)
-                self._setSpeed(-speed)
+        if speed >= 0:
+            self.m1.run(Adafruit_MotorHAT.FORWARD)
+            self.m2.run(Adafruit_MotorHAT.FORWARD)
+            self._setSpeed(speed)
         else:
-            raise ValueError('Setting speed is required!')
+            self.m1.run(Adafruit_MotorHAT.BACKWARD)
+            self.m2.run(Adafruit_MotorHAT.BACKWARD)
+            self._setSpeed(-speed)
 
     def stop(self):
         self._setSpeed(0)
