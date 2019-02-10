@@ -83,7 +83,6 @@ class GyroDrive:
         self.ds.stop()
         self.heading_thread.terminate()
         self.heading_thread = None
-        self.orient.gyro_accel_heading_terminate()
 
     def _thread_straight_drive_ga(self):
         orient = NineDOF()
