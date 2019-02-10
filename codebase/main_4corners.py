@@ -3,8 +3,8 @@ from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
 
 from time import sleep
 import atexit, sys
-sys.path.append("../../")
-sys.path.append("../../api")
+sys.path.append("/")
+sys.path.append("./api")
 from Adafruit_MotorHAT import *
 from multiprocessing import Queue
 from api.motors import *
@@ -20,34 +20,20 @@ camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
 mh = Adafruit_MotorHAT(addr=0x60)
 ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
 cutter = Cutter(ds.getMotor(CUTTER_MOTOR))
-q = Queue()
-positioning = Positioning(q)
-sleep(5)
+positioning = Positioning()
 
-def emptyQueue():
-    global q
-    while not q.empty():
-        try:
-            q.get(False)
-        except Empty:
-            continue
+sleep(5) # Wait for GPS to get data
 
-emptyQueue()
-startloc = q.get()
+startloc = positioning.getLatLng()
 bounds = Boundary(DATABASE_NAME)
+
 print("START")
 print(startloc)
-
-def getLatLng():
-    val = q.get()
-    print(val)
-    return val
 
 ds.go(100)
 
 while True:
-    emptyQueue()
-    loc = getLatLng()
+    loc = positioning.getLatLng()
     if bounds.converged(loc):
         break
 

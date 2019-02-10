@@ -1,25 +1,14 @@
 # See http://www.danmandle.com/blog/getting-gpsd-to-work-with-python/
 
-from gps import *
-from time import sleep
-import copy
-import threading
-import multiprocessing
+from gps3.agps3threaded import AGPS3mechanism
 
 class Positioning:
-    def __init__(self, q):
-        self.start_gps_thread(q)
+    def __init__(self):
+        self.agps_thread = AGPS3mechanism()
+        self.agps_thread.stream_data()
+        self.agps_thread.run_thread()
         return
 
-    def start_gps_thread(self, q):
-        self.thrd = multiprocessing.Process(target=self._thread_gps, args=(q, ))
-        self.thrd.daemon = True
-        self.thrd.start()
-
-    def _thread_gps(self, q):
-        gpsd = gps(mode=WATCH_ENABLE)
-
-        while True:
-            gpsd.next()
-            sleep(0.2)
-            q.put({"lat": round(gpsd.fix.latitude, 4), "lng": round(gpsd.fix.longitude, 4)})
+    def getLatLng(self):
+        return {'lat': round(agps_thread.data_stream.lat, 4),
+            'lng': round(agps_thread.data_stream.lon, 4)}
