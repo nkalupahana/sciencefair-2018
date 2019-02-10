@@ -1,5 +1,6 @@
 import sys
 sys.path.append("../../")
+sys.path.append("../../api")
 
 from api.gyrodrive import *
 from time import sleep
