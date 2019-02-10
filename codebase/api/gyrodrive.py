@@ -44,12 +44,12 @@ class GyroDrive:
             while abs(q.get() + angle) > 10:
                 error = q.get() + angle
                 print(error)
-                self.ds._setSpeed(150)
+                self.ds._setSpeed(110)
 
             while abs(q.get() + angle) > 0.25:
                 error = q.get() + angle
                 print(error)
-                self.ds._setSpeed(100)
+                self.ds._setSpeed(75)
         else:
             self.ds.m1.run(Adafruit_MotorHAT.FORWARD)
             self.ds.m2.run(Adafruit_MotorHAT.BACKWARD)
@@ -57,12 +57,12 @@ class GyroDrive:
             while abs(q.get() + angle) > 10:
                 error = q.get() + angle
                 print(error)
-                self.ds._setSpeed(150)
+                self.ds._setSpeed(110)
 
             while abs(q.get() + angle) > 0.25:
                 error = q.get() + angle
                 print(error)
-                self.ds._setSpeed(100)
+                self.ds._setSpeed(75)
 
         orient.ga_heading_terminate()
         self.ds.stop()
