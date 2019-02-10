@@ -35,14 +35,14 @@ class GyroDrive:
         orient.gyro_accel_zero()
         orient.ga_heading_begin_tracking(0.01, q)
 
+        self.ds.go(0, True)
+
         if angle > 0:
             self.ds.m1.run(Adafruit_MotorHAT.FORWARD)
             self.ds.m2.run(Adafruit_MotorHAT.BACKWARD)
         else:
             self.ds.m1.run(Adafruit_MotorHAT.BACKWARD)
             self.ds.m2.run(Adafruit_MotorHAT.FORWARD)
-
-        self.ds.go(0, True)
 
         while abs(q.get() - 55) > 10:
             error = q.get() - 55
