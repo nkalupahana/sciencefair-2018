@@ -21,7 +21,7 @@ class ButtonActionThread:
         self.thread = None
 
     def playTone(self):
-        Popen(['/root/sciencefair-2018/api/tonecreation', str(self.pitch), '0.5'])
+        Popen(['/root/sciencefair-2018/codebase/api/tonecreation', str(self.pitch), '0.5'])
 
     def checkPin(self):
         while True:
