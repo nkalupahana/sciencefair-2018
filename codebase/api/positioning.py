@@ -2,7 +2,7 @@
 
 from gps3 import agps3
 
-def getLatLng(self):
+def getLatLng():
     gps_socket = agps3.GPSDSocket()
     data_stream = agps3.DataStream()
     gps_socket.connect()
