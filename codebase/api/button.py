@@ -20,14 +20,15 @@ class ButtonActionThread:
         self.thread.terminate()
         self.thread = None
 
-    def playTone(self):
-        Popen(['/root/sciencefair-2018/codebase/api/tonecreation', str(self.pitch), '0.5'])
+    def playTone(self, pitch):
+        Popen(['/root/sciencefair-2018/codebase/api/tonecreation', str(pitch), '0.3'])
 
     def checkPin(self):
         while True:
             if GPIO.input(self.pin):
-                self.playTone()
+                self.playTone(self.pitch)
                 self.runner()
+                self.playTone(self.pitch + 10)
                 while GPIO.input(self.pin):
                     sleep(0.1)
 
