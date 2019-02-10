@@ -21,12 +21,14 @@ class GyroDrive:
 
     def turn_sequence(self, flip):
         self.ds.stop()
-
-        self.m_turn(65) if flip else self.m_turn(-65)
-        self.ds.run(200)
+        sleep(1)
+        self.ga_turn(65) if flip else self.ga_turn(-65)
+        sleep(1)
+        self.ds.run(100)
         sleep(2)
         self.ds.stop()
-        self.m_turn(65) if flip else self.m_turn(-65)
+        self.ga_turn(65) if flip else self.ga_turn(-65)
+        sleep(1)
 
     def ga_turn(self, angle):
         orient = NineDOF()
