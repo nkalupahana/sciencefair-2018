@@ -10,8 +10,7 @@ class GyroDrive:
     def __init__(self, m1, m2):
         self.mh = Adafruit_MotorHAT(addr=0x60)
         self.ds = DriveSystem(mh.getMotor(m1), mh.getMotor(m2))
-        self.orient = NineDOF()
-        self.rightTurn = True
+
 
     def getHAT(self):
         return self.mh
@@ -19,37 +18,51 @@ class GyroDrive:
     def getDriveSystem(self):
         return self.ds
 
-    def turn_sequence(self):
+    def turn_sequence(self, flip):
         self.ds.stop()
 
-        self.m_turn(90) if self.rightTurn else self.m_turn(-90)
-        self.ds.run(100)
-        sleep(1)
+        self.m_turn(55) if flip else self.m_turn(-55)
+        self.ds.run(200)
+        sleep(2)
         self.ds.stop()
-        self.m_turn(90) if self.rightTurn else self.m_turn(-90)
-
-        self.rightTurn = not self.rightTurn
+        self.m_turn(55) if flip else self.m_turn(-55)
 
     def ga_turn(self, angle):
-        self.orient.gyro_accel_heading_begin_tracking(0.05)
+        orient = NineDOF()
+        q = Queue()
+
+        orient.gyro_accel_zero()
+        orient.ga_heading_begin_tracking(0.01, q)
+
+        if angle > 0:
+            self.ds.m1.run(Adafruit_MotorHAT.FORWARD)
+            self.ds.m2.run(Adafruit_MotorHAT.BACKWARD)
+        else:
+            self.ds.m1.run(Adafruit_MotorHAT.BACKWARD)
+            self.ds.m2.run(Adafruit_MotorHAT.FORWARD)
+
         self.ds.go(0, True)
 
-        while abs(orient.gyro_accel_heading() - angle) > 0.1:
-            error = orient.gyro_accel_heading() - angle
-            self.ds.adjustSpeed(error * 20)
-            sleep(0.05)
+        while abs(q.get() - 55) > 10:
+            error = q.get() - 55
+            print(error)
+            self.ds.go(180)
 
-        self.orient.gyro_accel_heading_terminate()
+        while abs(q.get() - 55) > 0.25:
+            error = q.get() - 55
+            print(error)
+            self.ds.go(125)
+
+        orient.ga_heading_terminate()
         self.ds.stop()
 
     def straight_drive_start(self, speed):
+        self.ds.stop()
+
         self.ds.go(speed)
         self.orient.gyro_accel_heading_begin_tracking(0.01)
 
-        # Combined:
-        #self.orient.comb_heading_begin_tracking(0.1)
-
-        self.heading_thread = multiprocessing.Process(target=self._thread_straight_drive_ga_c)
+        self.heading_thread = multiprocessing.Process(target=self._thread_straight_drive_ga)
         self.heading_thread.daemon = True
         self.heading_thread.start()
 
@@ -58,19 +71,16 @@ class GyroDrive:
         self.ds.stop()
         self.heading_thread.terminate()
         self.heading_thread = None
+        self.orient.gyro_accel_heading_terminate()
 
-        try:
-            self.orient.gyro_accel_heading_terminate()
-        except:
-            pass
+    def _thread_straight_drive_ga(self):
+        orient = NineDOF()
+        q = Queue()
 
-        try:
-            self.orient.comb_heading_terminate()
-        except:
-            pass
-    
-    def _thread_straight_drive_ga_c(self):
+        orient.gyro_accel_zero()
+        orient.ga_heading_begin_tracking(0.01, q)
+
         while True:
-            error = self.orient.gyro_accel_heading()
-            self.ds.adjustSpeed(error * 8)
+            error = q.get()
+            self.ds.adjustSpeed(error * 10)
             sleep(0.1)
