@@ -10,5 +10,5 @@ class Positioning:
         return
 
     def getLatLng(self):
-        return {'lat': round(agps_thread.data_stream.lat, 4),
-            'lng': round(agps_thread.data_stream.lon, 4)}
+        return {'lat': round(self.agps_thread.data_stream.lat, 4),
+            'lng': round(self.agps_thread.data_stream.lon, 4)}
