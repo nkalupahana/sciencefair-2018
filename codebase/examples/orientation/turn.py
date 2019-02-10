@@ -21,13 +21,21 @@ ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
 
 ds.go(0, True)
 
-while abs(q.get() - 55) > 0.1:
+while abs(q.get() - 55) > 10:
     error = q.get() - 55
     print(error)
     ds.m1.run(Adafruit_MotorHAT.FORWARD)
-    ds.m1.setSpeed(int(abs(error * 10)))
+    ds.m1.setSpeed(180)
     ds.m2.run(Adafruit_MotorHAT.BACKWARD)
-    ds.m2.setSpeed(int(abs(error * 10)))
+    ds.m2.setSpeed(180)
+
+while abs(q.get() - 55) > 0.25:
+    error = q.get() - 55
+    print(error)
+    ds.m1.run(Adafruit_MotorHAT.FORWARD)
+    ds.m1.setSpeed(125)
+    ds.m2.run(Adafruit_MotorHAT.BACKWARD)
+    ds.m2.setSpeed(125)
 
 orient.ga_heading_terminate()
 ds.stop()
