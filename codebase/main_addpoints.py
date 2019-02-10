@@ -17,6 +17,7 @@ count = 0
 
 # Create function to save state
 def saveState():
+    global count
     print("SAVING")
     pos = getLatLng()
     print(pos)
