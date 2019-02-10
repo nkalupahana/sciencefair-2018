@@ -9,7 +9,7 @@ atexit.register(turnOffMotors)
 class GyroDrive:
     def __init__(self, m1, m2):
         self.mh = Adafruit_MotorHAT(addr=0x60)
-        self.ds = DriveSystem(mh.getMotor(m1), mh.getMotor(m2))
+        self.ds = DriveSystem(self.mh.getMotor(m1), self.mh.getMotor(m2))
 
 
     def getHAT(self):
