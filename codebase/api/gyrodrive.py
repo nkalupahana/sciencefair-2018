@@ -22,11 +22,11 @@ class GyroDrive:
     def turn_sequence(self, flip):
         self.ds.stop()
 
-        self.m_turn(55) if flip else self.m_turn(-55)
+        self.m_turn(65) if flip else self.m_turn(-65)
         self.ds.run(200)
         sleep(2)
         self.ds.stop()
-        self.m_turn(55) if flip else self.m_turn(-55)
+        self.m_turn(65) if flip else self.m_turn(-65)
 
     def ga_turn(self, angle):
         orient = NineDOF()
@@ -38,19 +38,19 @@ class GyroDrive:
         self.ds.go(0, True)
 
         if angle > 0:
-            self.ds.m1.run(Adafruit_MotorHAT.FORWARD)
-            self.ds.m2.run(Adafruit_MotorHAT.BACKWARD)
-        else:
             self.ds.m1.run(Adafruit_MotorHAT.BACKWARD)
             self.ds.m2.run(Adafruit_MotorHAT.FORWARD)
+        else:
+            self.ds.m1.run(Adafruit_MotorHAT.FORWARD)
+            self.ds.m2.run(Adafruit_MotorHAT.BACKWARD)
 
-        while abs(q.get() - 55) > 10:
-            error = q.get() - 55
+        while abs(q.get() - angle) > 10:
+            error = q.get() - angle
             print(error)
             self.ds._setSpeed(180)
 
-        while abs(q.get() - 55) > 0.25:
-            error = q.get() - 55
+        while abs(q.get() - angle) > 0.25:
+            error = q.get() - angle
             print(error)
             self.ds._setSpeed(125)
 
