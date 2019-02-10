@@ -23,6 +23,7 @@ ds.go(0, True)
 
 while abs(q.get() - 55) > 0.1:
     error = q.get() - 55
+    print(error)
     ds.m1.run(Adafruit_MotorHAT.FORWARD)
     ds.m1.setSpeed(error * 4.6)
 
