@@ -25,6 +25,6 @@ button = ButtonActionThread(BUTTON_PIN, saveState, CONFIRM_PITCH) # TODO: check 
 button.activate()
 
 # stay alive
-while db.getPoints().rowcount < 4:
+while len(["y" for thing in db.getPoints()]) < 4:
     print(db.getPoints().rowcount)
     sleep(1)
