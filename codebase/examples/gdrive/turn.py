@@ -7,9 +7,9 @@ from api.globals import *
 from time import sleep
 
 gdrive = GyroDrive(BASE_MOTOR_1, BASE_MOTOR_2)
-gdrive.ga_turn(-50)
-sleep(5)
-gdrive.ga_turn(50)
+gdrive.ga_turn(-53)
+sleep(1)
+gdrive.ga_turn(53)
 
 #sleep(5)
 #gdrive.ga_turn(90)
