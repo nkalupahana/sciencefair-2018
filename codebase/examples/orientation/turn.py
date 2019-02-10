@@ -25,7 +25,7 @@ while abs(q.get() - 55) > 0.1:
     error = q.get() - 55
     print(error)
     ds.m1.run(Adafruit_MotorHAT.FORWARD)
-    ds.m1.setSpeed(abs(error * 4.6))
+    ds.m1.setSpeed(int(abs(error * 4.6)))
 
 orient.ga_heading_terminate()
 ds.stop()
