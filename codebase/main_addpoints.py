@@ -21,10 +21,12 @@ def saveState():
     db.put(pos["lat"], pos["lng"])
 
 # Create button, activate
-button = ButtonActionThread(BUTTON_PIN, saveState, CONFIRM_PITCH) # TODO: check pitch
+button = ButtonActionThread(BUTTON_PIN, saveState, CONFIRM_PITCH)
 button.activate()
 
 # stay alive
 while len(["y" for thing in db.getPoints()]) < 4:
-    print(db.getPoints().rowcount)
     sleep(1)
+
+button.playTone(CONFIRM_PITCH + 10)
+button.playTone(CONFIRM_PITCH + 10)
