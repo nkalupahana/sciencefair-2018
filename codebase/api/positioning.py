@@ -1,5 +1,3 @@
-# See http://www.danmandle.com/blog/getting-gpsd-to-work-with-python/
-
 from gps3 import agps3
 
 def getLatLng():
