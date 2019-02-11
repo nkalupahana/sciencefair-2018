@@ -7,4 +7,4 @@ from api.globals import *
 from time import sleep
 
 gdrive = GyroDrive(BASE_MOTOR_1, BASE_MOTOR_2)
-gdrive.turn_sequence()
+gdrive.turn_sequence(False)
