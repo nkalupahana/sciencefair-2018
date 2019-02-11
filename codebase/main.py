@@ -7,7 +7,7 @@ from api.globals import *
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN)
 
-call(['sh', './api/welcome.sh'])
+call(['sh', '/root/sciencefair-2018/codebase/api/welcome.sh'])
 
 while True:
     if GPIO.input(BUTTON_PIN):
