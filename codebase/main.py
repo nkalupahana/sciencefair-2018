@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 from time import sleep, time
 import multiprocessing
 from subprocess import call
-from api.globals import BUTTON_PIN
+from api.globals import *
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN)
@@ -21,7 +21,6 @@ while True:
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
-            call(['rm', DATABASE_NAME])
             call(['python3', './main_addpoints.py'])
         else:
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
