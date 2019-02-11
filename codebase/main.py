@@ -17,16 +17,16 @@ while True:
             sleep(0.01)
 
         if (time() > start + 1):
-            call(['./tonecreation', '70', '0.4'])
-            call(['./tonecreation', '70', '0.4'])
-            call(['./tonecreation', '70', '0.4'])
-            call(['./tonecreation', '70', '0.4'])
+            call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
+            call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
+            call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
+            call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
             call(['rm', DATABASE_NAME])
-            call(['python', './main_addpoints.py'])
+            call(['python3', './main_addpoints.py'])
         else:
-            call(['./tonecreation', '70', '0.4'])
-            call(['./tonecreation', '70', '0.4'])
-            call(['python', './main_4corners.py'])
+            call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
+            call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
+            call(['python3', './main_4corners.py'])
 
         call(['./tonecreation', '77', '1'])
 
