@@ -92,5 +92,6 @@ class GyroDrive:
 
         while True:
             error = q.get()
-            self.ds.adjustSpeed(error * 10)
+            print(error)
+            self.ds.adjustSpeed(int(error * 10))
             sleep(0.1)
