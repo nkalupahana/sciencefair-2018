@@ -27,6 +27,6 @@ while True:
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
             call(['python3', './main_4corners.py'])
 
-        call(['/root/sciencefair-2018/codebase/api/tonecreation', '77', '1'])
+        call(['/root/sciencefair-2018/codebase/api/tonecreation', '80', '1'])
 
     sleep(0.1)
