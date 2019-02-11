@@ -73,7 +73,7 @@ class GyroDrive:
         self.ds.stop()
 
         self.heading_thread = multiprocessing.Process(target=self._thread_straight_drive_ga, args=(speed, ))
-        self.heading_thread.daemon = True
+        self.heading_thread.daemon = False
         self.heading_thread.start()
 
     def straight_drive_terminate(self):
