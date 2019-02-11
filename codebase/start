@@ -1,2 +1,5 @@
 #!/bin/sh
+sudo systemctl stop gpsd.socket
+sudo systemctl disable gpsd.socket
+sudo gpsd /dev/serial0 -F /var/run/gpsd.sock
 python3 /root/sciencefair-2018/codebase/main.py
