@@ -35,6 +35,7 @@ class GyroDrive:
         q = Queue()
 
         orient.gyro_accel_zero()
+        sleep(1)
         orient.ga_heading_begin_tracking(0.01, q)
 
         self.ds.go(0, True)
@@ -86,6 +87,7 @@ class GyroDrive:
         q = Queue()
 
         orient.gyro_accel_zero()
+        sleep(1)
         orient.ga_heading_begin_tracking(0.01, q)
 
         self.ds.go(speed)
