@@ -24,7 +24,7 @@ class GyroDrive:
         sleep(1)
         self.ga_turn(65) if flip else self.ga_turn(-65)
         sleep(1)
-        self.ds.run(100)
+        self.ds.go(100)
         sleep(2)
         self.ds.stop()
         self.ga_turn(65) if flip else self.ga_turn(-65)
