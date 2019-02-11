@@ -72,10 +72,7 @@ class GyroDrive:
     def straight_drive_start(self, speed):
         self.ds.stop()
 
-        self.ds._setSpeed(speed)
-        self.orient.gyro_accel_heading_begin_tracking(0.01)
-
-        self.heading_thread = multiprocessing.Process(target=self._thread_straight_drive_ga)
+        self.heading_thread = multiprocessing.Process(target=self._thread_straight_drive_ga, args=(speed, ))
         self.heading_thread.daemon = True
         self.heading_thread.start()
 
@@ -84,12 +81,14 @@ class GyroDrive:
         self.heading_thread.terminate()
         self.heading_thread = None
 
-    def _thread_straight_drive_ga(self):
+    def _thread_straight_drive_ga(self, speed):
         orient = NineDOF()
         q = Queue()
 
         orient.gyro_accel_zero()
         orient.ga_heading_begin_tracking(0.01, q)
+
+        self.ds.go(speed)
 
         while True:
             error = q.get()
