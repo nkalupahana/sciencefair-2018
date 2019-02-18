@@ -4,8 +4,8 @@ To use one of the files in the examples folder, just run it, making sure that th
 
 ### Enabling GPS socket on RPi
 
-`
+```
 sudo systemctl stop gpsd.socket
 sudo systemctl disable gpsd.socket
 sudo gpsd /dev/serial0 -F /var/run/gpsd.sock
-`
+```
