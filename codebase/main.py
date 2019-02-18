@@ -26,7 +26,7 @@ while True:
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
             #call(['python3', '/root/sciencefair-2018/codebase/main_4corners.py'])
-            call(['python3', '/root/sciencefair-2018/codebase/examples/motor/quickcut.py'])
+            call(['python3', '/root/sciencefair-2018/codebase/quickcut.py'])
 
         call(['/root/sciencefair-2018/codebase/api/tonecreation', '80', '1'])
 
