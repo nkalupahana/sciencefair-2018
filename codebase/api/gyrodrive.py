@@ -8,12 +8,11 @@ import multiprocessing
 from multiprocessing import Queue
 from globals import DEBUG
 
-# Forces motors to stop on unclean exit
-atexit.register(turnOffMotors)
-
-
 class GyroDrive:
     def __init__(self, m1, m2):
+        # Forces motors to stop on unclean exit
+        atexit.register(turnOffMotors)
+        
         # Initialize lower-level drive
         self.mh = Adafruit_MotorHAT(addr=0x60)
         self.ds = DriveSystem(self.mh.getMotor(m1), self.mh.getMotor(m2))
