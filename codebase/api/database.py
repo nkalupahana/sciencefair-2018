@@ -1,7 +1,7 @@
 import sqlite3
 from globals import DEBUG
 
-# Database access wrapper
+# Database access wrapper (database for storing path coordinates)
 class Database:
     def __init__(self, name):
         # Connects to databse, gets access cursor
