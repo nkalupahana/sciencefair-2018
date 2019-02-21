@@ -43,7 +43,7 @@ while True:
         gd.straight_drive_start()
 
     ymin = camera.run()
-    if (ymin != 0):
+    if (ymin != -1):
         sleep(ymin + 2)
         ds.go(50)
         cutter.cut()
