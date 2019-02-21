@@ -1,4 +1,3 @@
-# Add API
 import sys
 sys.path.append("./")
 sys.path.append("./api")
@@ -15,16 +14,16 @@ db.prepare()
 
 # Create function to save state
 def saveState():
-    print("SAVING")
+    print("SAVING") if DEBUG else 0
     pos = getLatLng()
-    print(pos)
+    print(pos) if DEBUG else 0
     db.put(pos["lat"], pos["lng"])
 
-# Create button, activate
+# Create button check thread, activate
 button = ButtonActionThread(BUTTON_PIN, saveState, CONFIRM_PITCH)
 button.activate()
 
-# stay alive
+# Stay alive until all points gathered
 while len(["y" for thing in db.getPoints()]) < 4:
     sleep(1)
 
