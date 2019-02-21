@@ -6,7 +6,6 @@ import threading
 import copy
 from globals import DEBUG
 
-
 class Camera:
     # S-curve, used to suppress duplicate bounding boxes
     def sigmoid(self, x):
