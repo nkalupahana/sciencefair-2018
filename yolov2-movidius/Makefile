@@ -47,22 +47,22 @@ clone_darkflow_repo:
 		${CLONE_DARKFLOW} ; \
 		cd darkflow ; \
 		pip3 install . ; \
-	fi 
+	fi
 
 .PHONY: download_cfg
 download_cfg:
-	@echo "\nChecking Tiny Yolo V2 cfg file..." 
+	@echo "\nChecking Tiny Yolo V2 cfg file..."
 	@if [ -e darkflow/cfg/${CFG_FILENAME} ] ; \
 	then \
 		echo "cfg file already exist.\n" ; \
 	else \
 		echo "cfg file does not exists.\n" ; \
 		${GET_CFG} ; \
-	fi 
+	fi
 
 .PHONY: download_weights
 download_weights:
-	@echo "\nChecking Tiny Yolo V2 weights file..." 
+	@echo "\nChecking Tiny Yolo V2 weights file..."
 	@if [ -e darkflow/bin/${WEIGHTS_FILENAME} ] ; \
 	then \
 		echo "weights file already exists.\n" ; \
@@ -70,7 +70,7 @@ download_weights:
 		echo "weights file does not exist.\n" ; \
 		mkdir darkflow/bin ; \
 		${GET_WEIGHTS} ; \
-	fi 
+	fi
 
 
 .PHONY: profile
@@ -86,7 +86,7 @@ browse_profile: profile
 		firefox output_report.html & \
 	else \
 		@echo "***\nError - output_report.html not found" ; \
-	fi ; 
+	fi ;
 
 .PHONY: compile
 compile: generate_model
@@ -98,27 +98,16 @@ check: generate_model
 	@echo "\nmaking check"
 	${NCCHECK} ${TF_MODEL_FILENAME} -s 12
 
-.PHONY: run_py
-run_py: compile
-	@echo "\nmaking run_py"
-	python3 ./run.py
-
-.PHONY: run
-run: compile
-	@echo "\nmaking run"
-	python3 ./run.py
-
 .PHONY: help
 help:
 	@echo "possible make targets: ";
 	@echo "  make help - shows this message";
-	@echo "  make all - makes the following: prototxt, profile, compile, check, cpp, run_py, run_cpp";
+	@echo "  make all - makes the following: prototxt, profile, compile, check, cpp, run_cpp";
 	@echo "  make prototxt - downloads and adds input shape to Caffe prototxt file";
 	@echo "  make caffemodel - downloads the caffemodel for the network"
 	@echo "  make compile - runs SDK compiler tool to compile the NCS graph file for the network";
 	@echo "  make profile - runs the SDK profiler tool to profile the network creating output_report.html";
 	@echo "  make browse_profile - runs the SDK profiler tool and brings up report in browser.";
-	@echo "  make run - runs the run.py python example program";
 	@echo "  make clean - removes all created content"
 
 clean_caffe_model:
