@@ -4,18 +4,25 @@ import multiprocessing
 from subprocess import call
 from api.globals import *
 
+# Allow input from button pin
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN)
 
+# Play startup chime
 call(['sh', '/root/sciencefair-2018/codebase/api/welcome.sh'])
 
 while True:
+    # If button pressed:
     if GPIO.input(BUTTON_PIN):
+        # Record start time
         start = time()
 
+        # While button pressed, wait
         while GPIO.input(BUTTON_PIN):
             sleep(0.01)
 
+        # If pressed for longer than one second, run point save program
+        # Else, run detection program
         if (time() > start + 1):
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
             call(['/root/sciencefair-2018/codebase/api/tonecreation', '70', '0.4'])
