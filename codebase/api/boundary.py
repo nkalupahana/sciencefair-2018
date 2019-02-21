@@ -3,6 +3,7 @@ from globals import DEBUG
 
 # currently only supports 4 points (rectangle), robot must start at first point going towards second point
 
+# Boundary Operations
 class Boundary:
     # Create database and get points
     def __init__(self, name):
