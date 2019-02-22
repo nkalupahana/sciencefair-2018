@@ -11,6 +11,7 @@ from api.motors import *
 from api.positioning import *
 from api.boundary import *
 from api.globals import *
+from api.camera import *
 
 # System component initialization
 camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
