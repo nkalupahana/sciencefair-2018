@@ -15,14 +15,14 @@ mh = Adafruit_MotorHAT(addr=0x60)
 ds = DriveSystem(mh.getMotor(1), mh.getMotor(2))
 cutter = Cutter(mh.getMotor(3))
 
-ds.go(100)
+ds.go(75)
 
 while True:
     ymin = camera.run()                    # Move network forward
     if (ymin != -1):                       # If bounding box found
-        sleep(ymin + 2)                    # Sleep until on top of weed
-        ds.go(50)
+        sleep(ymin)                        # Sleep until on top of weed
+        ds.go(40)
         cutter.cut()
         ds.go(-10)                         # Stall until checks are run again
     else:
-        ds.go(100)
+        ds.go(75)
