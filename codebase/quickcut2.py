@@ -1,5 +1,5 @@
 from Adafruit_MotorHAT import Adafruit_MotorHAT, Adafruit_DCMotor
-
+import atexit
 from time import sleep
 import sys
 sys.path.append("./")
@@ -8,6 +8,8 @@ sys.path.append("./api")
 from api.motors import *
 from api.globals import *
 from api.camera import *
+
+atexit.register(turnOffMotors)
 
 # Initialize components
 camera = Camera(GRAPH_PATH, DETECTION_LIMIT, IOU_LIMIT, LABELS)
